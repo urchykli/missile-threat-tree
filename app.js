@@ -6,7 +6,7 @@ let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAl
 //   return data
 // })
 
-const margin = { top: 10, right: 10, bottom: 10, left: 10 }
+const margin = { top: 40, right: 10, bottom: 10, left: 10 }
 const fullWidth = 960
 const fullHeight = 500
 const width = fullWidth - margin.left - margin.right
@@ -51,13 +51,11 @@ async function parseData(csv) {
 
 async function createTree() {
 
-
   let data = await parseData(csv)
-
 
   const tree = d3.tree(data)
     .separation((a, b) => ((a.parent === b.parent) ? 1 : 0.5))
-    .size([height, width])
+    .size([width, height])
 
   const svg = d3.select('body')
     .append('svg')
@@ -74,9 +72,8 @@ async function createTree() {
     .attr('y', 50)
 
   const elbow = (d, i) => {
-    return `M${d.source.y},${d.source.x}H${d.target.y},V${d.target.x}${d.target.children ? '' : 'h' + margin.right}`
+    return `M${d.source.x},${d.source.y}H${d.target.x},V${d.target.y}${d.target.children ? '' : 'h' + margin.right}`
   }
-
 
   let treeNodes = tree(data)
 
@@ -92,16 +89,13 @@ async function createTree() {
     .data(treeNodes.descendants())
     .enter().append('g')
     .attr('class', 'node')
-    .attr('transform', d => `translate(${d.y},${d.x})`)
+    .attr('transform', d => `translate(${d.x},${d.y})`)
 
   node.append('text')
     .attr('class', 'name')
     .attr('x', 8)
     .attr('y', -6)
-    .text(d => {
-      console.log(d)
-      return `${d.data.id}`
-    })
+    .text(d => `${d.data.id}`)
 
 }
 function fetchCSV(src) {
