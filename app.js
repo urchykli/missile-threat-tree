@@ -1,5 +1,5 @@
-let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
-
+// let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
+let csv = './data.csv'
 
 // let data = d3.csv(csv).then(function (data) {
 //   console.log(data)
@@ -8,7 +8,7 @@ let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAl
 
 const margin = { top: 40, right: 10, bottom: 10, left: 10 }
 const fullWidth = 1500
-const fullHeight = 500
+const fullHeight = 1000
 const width = fullWidth - margin.left - margin.right
 const height = fullHeight - margin.top - margin.bottom
 
@@ -40,26 +40,41 @@ async function parseData(csv) {
       parent.push(parentMissile)
 
       relationship.push({ 'name': childMissile, 'parent': parentMissile, 'year': missiles[5], 'inPossession': missiles[6], 'range': missiles[7], 'url': missiles[8], 'annotation': missiles[9] })
-      console.log(relationship)
     })
     let stratify = d3.stratify()
       .id(function (d) { return d.name })
       .parentId(function (d) { return d.parent })
     let root = stratify(relationship)
-    console.log(root)
     return root
   })
   return d3.hierarchy(nodes)
 }
 
+// async function yearsArray() {
+//   let years = await fetchCSV(csv)
+// }
 
 async function createTree() {
 
   let data = await parseData(csv)
-  let format_name = data.data.data.name.split(",")
+  let findYears = await fetchCSV(csv)
+  let years = []
+  findYears.forEach(missiles => {
+    years.push(missiles[5])
+  })
+
+
+  let minYear = d3.min(years)
+  let maxYear = d3.max(years)
+
+  let y_scale = d3.scaleLinear()
+    .domain([minYear, maxYear])
+    .range([margin.top, height])
+
+  let y_axis = d3.axisLeft()
+    .scale(y_scale)
 
   const tree = d3.tree(data)
-    .separation((a, b) => ((a.parent === b.parent) ? 150 : 50))
     .size([width, height])
 
   const svg = d3.select('body')
@@ -69,6 +84,7 @@ async function createTree() {
 
   const g = svg.append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`)
+  // .call(y_axis)
 
   g.append('text')
     .text('d3.tree - A Family Tree')
@@ -77,7 +93,8 @@ async function createTree() {
     .attr('y', 50)
 
   const elbow = (d, i) => {
-    return `M${d.source.x},${d.source.y}H${d.target.x},V${d.target.y}${d.target.children ? '' : 'h' + margin.right}`
+    console.log(d.source)
+    return `M${d.source.x},${y_scale(d.source.data.data.year)}H${d.target.x},V${y_scale(d.target.data.data.year)}${d.target.children ? '' : 'h' + margin.right}`
   }
 
   let treeNodes = tree(data)
@@ -88,18 +105,21 @@ async function createTree() {
     .attr('class', 'link')
     .attr('d', elbow)
 
+
   const node = g.selectAll('.node')
     .data(treeNodes.descendants())
     .enter().append('g')
     .attr('class', 'node')
-    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .attr('transform', d => {
+      console.log(d.data.data.year)
+      return "translate(" + d.x + "," + y_scale(d.data.data.year) + ")"
+    })
 
   node.append('text')
-    .attr('class', 'name')
     .attr('x', 8)
     .attr('y', -6)
     .text(d => `${d.data.id.split(",")[0]}`)
-
+    .attr('class', 'text')
 }
 function fetchCSV(src) {
   return d3.csv(src, d => {

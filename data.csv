@@ -1,0 +1,57 @@
+Country,Inherited,Acquisition_Method,Missile,Derivitive,Activation_Delivery,Still Possess?,Range,Missile_Threat_URL,Annotations_Comments,,
+USSR,,,Scud A,,1955,N/A,,,,,
+USSR,,USSR,Scud B,Scud A,1962,N/A,,,,,
+USSR,,USSR,R-11FM (Scud SLBM),Scud A,1959,N/A,,,,,
+Poland,,USSR,Scud A,,1961,N,,,,Child,Parent
+Czechoslovakia,,USSR,Scud A,,1961,N/A,,,,USSR Scud A 1955,
+Bulgaria,,USSR,Scud A,,1961,N,,,,Poland Scud A 1961,USSR Scud A 1955
+East Germany (GDR),,USSR,Scud A,,1962,N/A,,,,Bulgaria Scud A 1961,USSR Scud A 1955
+Hungary,,USSR,Scud A,,1962,N,,,,USSR Scud B 1962,USSR Scud A 1955
+Romania,,USSR,Scud A,,1962,N,,,,Egypt Scud B 1973,USSR Scud B 1962
+Syria,,USSR,Scud B,,1973,Y,,,,Egypt Project T 1990,Egypt Scud B 1973
+Egypt,,USSR,Scud B,,1973,Y,,,,North Korea Scud B 1979,Egypt Scud B 1973
+Iraq,,USSR,Scud B,,1975,N,,,,Belarus Inherited Scud B 1991,USSR Scud B 1962
+Libya,,USSR,Scud B,,1976,N,,,,,
+Yemen,,USSR,Scud B,,1979,N/A,,,,,
+North Korea,,Egypt,Scud B,,1979,Y,,,,,If !Acquisition Method Return
+Vietnam,,USSR,Scud B,,1981,Y,,,,,If derivitive else Missile
+North Korea,,North Korea,Hwasong 5,Scud B,1984,Y,,,,"Country, Inherited, Missile, Year","Acquisition Method, Derivitive or Missile, Year"
+Iran,,Libya,Scud B,,1985,Y,,,,,
+Iran,,North Korea,Hwasong 5,,1987,Y,,,,,
+Afghanistan,,USSR,Scud B,,1988,N,,,,,
+UAE,,North Korea,Hwasong 5,,1989,N/A,,,Never activated due to quality issues,,
+North Korea,,North Korea,Hwasong 6,Hwasong 5,1989,Y,,,,,
+Iraq,,Iraq,Al-Hussein,Scud B,1990,N,,,,,
+Syria,,North Korea,Hwasong 6,,1991,Y,,,,,
+Syria,,North Korea,Hwasong 9,,2000,Y,,,,,
+Iran,,Iran,Shahab 1,Hwasong 5,1987,,,,,,
+Iran,,North Korea,Hwasong 6,,1991,Y,,,,,
+Azerbaijan,Inherited,USSR,Scud B,,1991,N,,,,,
+Belarus,Inherited,USSR,Scud B,,1991,N,,,,,
+Kazakhstan,Inherited,USSR,Scud B,,1991,N,,,,,
+Armenia,Inherited,USSR,Scud B,,1991,Y,,,,,
+Georgia,Inherited,USSR,Scud B,,1991,N,,,,,
+Turkmenistan,Inherited,USSR,Scud B,,1991,Y,,,,,
+Ukraine,Inherited,USSR,Scud B,,1991,N,,,,,
+Czech Republic,Inherited,USSR,Scud B,,1993,N,,,,,
+Russia,Inherited,USSR,Scud B,,1991,N,,,,,
+Slovakia,Inherited,USSR,Scud B,,1993,N,,,,,
+North Korea,,North Korea,Hwasong 7,Hwasong 6,1993,Y,,,,,
+North Korea,,North Korea,Hwasong 9,Hwasong 6,1994,Y,,,,,
+Iran,,North Korea,Hwasong 7,,1996,Y,,,,,
+Pakistan,,North Korea,Hwasong 7,,1996,Y,,,,,
+Vietnam,,North Korea,Hwasong 6,,1998,Y,,,,,
+Libya,,North Korea,Hwasong 6,,1999,N,,,,,
+Syria,,North Korea,Hwasong 7,,2000,Y,,,,,
+Yemen,,North Korea,Hwasong 6,,2001,N,,,,,
+Iran,,Iran,Shahab 3,Hwasong 7,2003,Y,,,,,
+Pakistan,,Pakistan,Ghauri,Hwasong 7,2003,Y,,,,,
+Houthis,,Yemen,Scud B,,2015,N,,,,,
+Houthis,,Iran,Burkan 1,Shahab 2,2016,Y,,,,,
+Houthis,,Iran,Qiam 1,,2017,Y,,,,,
+Houthis,,Houthis,Burkan 2H,Qiam 1,2017,Y,,,,,
+Hezbollah,,Iran,Shahab 1,,2009,Y,,,,,
+Egypt,,Egypt,Project T,Scud B,1990,Y,,,,,
+Myanmar,,North Korea,Hwasong 5,,2004,Y,,,,,
+Iran,,Iran,Shahab 2,Shahab 1,1997,Y,,,,,
+Iran,,Iran,Qiam 1,Shahab 2,2017,,,,,,
