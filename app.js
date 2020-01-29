@@ -74,6 +74,9 @@ async function createTree() {
   let y_axis = d3.axisLeft()
     .scale(y_scale)
 
+  y_axis.tickSize(-2000)
+
+
   const tree = d3.tree(data)
     .size([width, height])
 
@@ -84,7 +87,7 @@ async function createTree() {
 
   const g = svg.append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`)
-  // .call(y_axis)
+    .call(y_axis)
 
   g.append('text')
     .text('d3.tree - A Family Tree')
@@ -92,9 +95,13 @@ async function createTree() {
     .attr('x', 50)
     .attr('y', 50)
 
+
+  g.selectAll(".tick text")
+    .attr('font-size', '20')
+    .attr("transform", `translate(${margin.left + 50},${0})`)
+
   const elbow = (d, i) => {
-    console.log(d.source)
-    return `M${d.source.x},${y_scale(d.source.data.data.year)}H${d.target.x},V${y_scale(d.target.data.data.year)}${d.target.children ? '' : 'h' + margin.right}`
+    return `M${d.source.x}, ${y_scale(d.source.data.data.year)} H${d.target.x}, V${y_scale(d.target.data.data.year)} ${d.target.children ? '' : 'h' + margin.right} `
   }
 
   let treeNodes = tree(data)
@@ -106,19 +113,18 @@ async function createTree() {
     .attr('d', elbow)
 
 
-  const node = g.selectAll('.node')
+  const node = svg.selectAll('.node')
     .data(treeNodes.descendants())
     .enter().append('g')
     .attr('class', 'node')
     .attr('transform', d => {
-      console.log(d.data.data.year)
       return "translate(" + d.x + "," + y_scale(d.data.data.year) + ")"
     })
 
   node.append('text')
     .attr('x', 8)
     .attr('y', -6)
-    .text(d => `${d.data.id.split(",")[0]}`)
+    .text(d => `${d.data.id.split(",")[0]} `)
     .attr('class', 'text')
 }
 function fetchCSV(src) {
