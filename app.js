@@ -1,9 +1,9 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
 let csv = './data.csv'
 
-const margin = { top: 40, right: 10, bottom: 10, left: 10 }
+const margin = { top: 40, right: 20, bottom: 40, left: 20 }
 const fullWidth = 1700
-const fullHeight = 1000
+const fullHeight = 2000
 const width = fullWidth - margin.left - margin.right
 const height = fullHeight - margin.top - margin.bottom
 
@@ -34,7 +34,16 @@ async function parseData(csv) {
       // Push parent missile name to parent array
       parent.push(parentMissile)
 
-      relationship.push({ 'name': childMissile, 'parent': parentMissile, 'year': missiles[5], 'inPossession': missiles[6], 'range': missiles[7], 'url': missiles[8], 'annotation': missiles[9] })
+      relationship.push({
+        'name': childMissile,
+        'parent': parentMissile,
+        'inherited': missiles[1],
+        'year': missiles[5],
+        'inPossession': missiles[6],
+        'range': missiles[7],
+        'url': missiles[8],
+        'annotation': missiles[9]
+      })
     })
     let stratify = d3.stratify()
       .id(d => d.name)
@@ -69,7 +78,12 @@ async function createTree() {
 
   const tree = d3.tree(data)
     .size([width, height])
+    .separation(function (a, b) {
+      // console.log(a.parent, b.parent)
+      return (a.parent == b.parent ? .5 : 1)
+    })
 
+  // nodes.forEach(function (d) { d.y = d.depth * 180; })
   const svg = d3.select('body')
     .append('svg')
     .attr('width', fullWidth)
@@ -94,14 +108,37 @@ async function createTree() {
     .y(d => y_scale(d.data.data.year))
 
   let treeNodes = tree(data)
+  let nodes = treeNodes.leaves(data)
+
+  console.log(nodes)
 
   const link = g.selectAll('.link')
     .data(treeNodes.links())
     .enter().append('path')
     .attr('class', 'link')
     .attr("fill", "none")
-    .attr("stroke", "Red")
+    .attr("stroke", d => {
+      let target = d.target.data.id.split(",")
+      let parent = d.target.data.data.parent.split(',')
+      if (parent[0] === target[0]) {
+        return "#E68A50"
+      } else {
+        return "#179699"
+      }
+    })
+    .attr("stroke-width", d => {
+      let target = d.target.data.id.split(",")
+      let parent = d.target.data.data.parent.split(',')
+      if (parent[0] === target[0]) {
+        return 3
+      }
+    })
     .attr("d", linkPath)
+    .style('stroke-dasharray', d => {
+      if (d.target.data.data.inherited) {
+        return ('10.3')
+      }
+    })
 
   const node = g.selectAll('.node')
     .data(treeNodes.descendants())
@@ -111,6 +148,23 @@ async function createTree() {
 
   node.append("circle")
     .attr("r", 5)
+    .style("stroke", d => {
+      let target = d.data.data.name.split(",")
+      let parent = d.data.data.parent.split(',')
+      if (parent[0] === target[0]) {
+        return "#E68A50"
+      } else {
+        return "#179699"
+      }
+    })
+    .style('stroke-width', d => {
+      let target = d.data.data.name.split(",")
+      let parent = d.data.data.parent.split(',')
+      if (parent[0] === target[0]) {
+        return 3
+      }
+    })
+    .style('fill', '#179699')
   // .style("stroke", d => d.data.type)
   // .style("fill", d => d.data.level)
 
