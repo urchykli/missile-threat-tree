@@ -6,6 +6,8 @@ const fullWidth = 1700
 const fullHeight = 2000
 const width = fullWidth - margin.left - margin.right
 const height = fullHeight - margin.top - margin.bottom
+const yOffset = 35
+const xOffset = 10
 
 async function parseData(csv) {
   nodes = await fetchCSV(csv).then(res => {
@@ -22,6 +24,10 @@ async function parseData(csv) {
       function getDerivative(developed) {
         return (developed ? missiles[4] : missiles[3])
       }
+      // function parentCountry(developed) {
+      //   console.log(developed)
+      //   return (developed === 'Development' ? missiles[2] : missiles[0])
+      // }
       let parentMissile = ""
       // Determine if this is the root missile
       if (!missiles[2]) {
@@ -49,6 +55,17 @@ async function parseData(csv) {
       .id(d => d.name)
       .parentId(d => d.parent)
     let root = stratify(relationship)
+
+    // root.sum(d => {
+    //   console.log(d)
+    // })
+
+
+    // if (root.children) {
+    //   return root.value += 1
+    // }
+
+    root.sort((a, b) => a.value - b.value)
     return root
   })
   return d3.hierarchy(nodes)
@@ -62,6 +79,7 @@ async function createTree() {
   findYears.forEach(missiles => {
     years.push(missiles[5])
   })
+  const og = data.data.data
 
   const minYear = d3.min(years)
   const maxYear = d3.max(years)
@@ -72,14 +90,13 @@ async function createTree() {
 
   let y_axis = d3.axisLeft()
     .scale(y_scale)
+    .tickFormat(d3.format('d'))
 
   y_axis.tickSize(-2000)
 
-
-  const tree = d3.tree(data)
+  const tree = d3.tree()
     .size([width, height])
     .separation(function (a, b) {
-      // console.log(a.parent, b.parent)
       return (a.parent == b.parent ? .5 : 1)
     })
 
@@ -99,9 +116,20 @@ async function createTree() {
     .attr('font-size', '20')
     .attr("transform", `translate(${margin.left + 50},${0})`)
 
-  // const elbow = (d, i) => {
-  //   return `M${d.target.x}, ${y_scale(d.target.data.data.year)} C${(d.target.x + d.source.x) / 2},${y_scale(d.target.data.data.year)} ${(d.target.x + d.source.x) / 2},${y_scale(d.source.data.data.year)} ${d.source.x},${y_scale(d.source.data.data.year)}`
-  // }
+  const elbow = (d, i) => {
+    yPosTarget = y_scale(d.target.data.data.year)
+    yPosSource = y_scale(d.source.data.data.year)
+    // -------------- Refactor --------------
+    if (d.source.data.data === og && d.target.children) {
+      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget + yOffset)}`
+    } else if (d.source.data.data === og && !d.target.children) {
+      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget - yOffset)}`
+    } else if (d.source.children && d.target.children) {
+      return `M${d.source.x},${(yPosSource + yOffset)}H${d.target.x},V${(yPosTarget + yOffset)}`
+    } else {
+      return `M${d.source.x},${(yPosSource + yOffset)}H${d.target.x},V${(yPosTarget - yOffset)}`
+    }
+  }
 
   let linkPath = d3.linkHorizontal()
     .x(d => d.x)
@@ -110,7 +138,12 @@ async function createTree() {
   let treeNodes = tree(data)
   let nodes = treeNodes.leaves(data)
 
-  console.log(nodes)
+
+  // treeNodes.count()
+  //   .sort((a, b) => {
+  //     return a.value - b.value
+  //   })
+  // console.log(treeNodes)
 
   const link = g.selectAll('.link')
     .data(treeNodes.links())
@@ -133,7 +166,7 @@ async function createTree() {
         return 3
       }
     })
-    .attr("d", linkPath)
+    .attr("d", elbow)
     .style('stroke-dasharray', d => {
       if (d.target.data.data.inherited) {
         return ('10.3')
@@ -144,7 +177,17 @@ async function createTree() {
     .data(treeNodes.descendants())
     .enter().append('g')
     .attr('class', 'node')
-    .attr('transform', d => "translate(" + d.x + "," + y_scale(d.data.data.year) + ")")
+    .attr('transform', d => {
+      yPos = y_scale(d.data.data.year)
+      // -------------- Refactor --------------
+      if (d.data.data === og) {
+        return "translate(" + d.x + "," + (yPos) + ")"
+      } else if (d.children) {
+        return "translate(" + d.x + "," + (yPos + yOffset) + ")"
+      } else {
+        return "translate(" + d.x + "," + (yPos - yOffset) + ")"
+      }
+    })
 
   node.append("circle")
     .attr("r", 5)
@@ -169,14 +212,39 @@ async function createTree() {
   // .style("fill", d => d.data.level)
 
   node.append('text')
-    // .attr('x', 0)
-    .attr('y', 25)
+    .attr('x', d => {
+      if (!d.children) {
+        return xOffset
+      }
+    })
+    .attr('y', 20)
+    // .attr('y', d => {
+    //   yPos = y_scale(d.data.data.year)
+    //   if (d.children) {
+    //     return 20
+    //   } else {
+    //     return 20 - yOffset
+    //   }
+    // })
     .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[0]} `)
     .attr('class', 'text')
 
   node.append('text')
+    .attr('x', d => {
+      if (!d.children) {
+        return xOffset
+      }
+    })
     .attr('y', 40)
+    // .attr('y', d => {
+    //   yPos = y_scale(d.data.data.year)
+    //   if (d.children) {
+    //     return 40
+    //   } else {
+    //     return 40 - yOffset
+    //   }
+    // })
     .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[1]} `)
     .attr('class', 'text')
