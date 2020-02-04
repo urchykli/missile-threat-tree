@@ -1,7 +1,7 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
-let csv = './data.csv'
+let csv = './data2.csv'
 
-const margin = { top: 40, right: 20, bottom: 40, left: 20 }
+const margin = { top: 40, right: 20, bottom: 140, left: 20 }
 const fullWidth = 1700
 const fullHeight = 2000
 const width = fullWidth - margin.left - margin.right
@@ -24,10 +24,10 @@ async function parseData(csv) {
       function getDerivative(developed) {
         return (developed ? missiles[4] : missiles[3])
       }
-      // function parentCountry(developed) {
-      //   console.log(developed)
-      //   return (developed === 'Development' ? missiles[2] : missiles[0])
-      // }
+      function parentCountry(developed) {
+        console.log(developed)
+        return (developed === 'Development' ? missiles[0] : missiles[2])
+      }
       let parentMissile = ""
       // Determine if this is the root missile
       if (!missiles[2]) {
@@ -35,7 +35,7 @@ async function parseData(csv) {
         parentMissile = ""
       } else {
         // If not root missile, create parent missile name
-        parentMissile = missiles[2] + ',' + getDerivative(missiles[4])
+        parentMissile = parentCountry(missiles[2]) + ',' + getDerivative(missiles[4])
       }
       // Push parent missile name to parent array
       parent.push(parentMissile)
@@ -56,18 +56,20 @@ async function parseData(csv) {
       .parentId(d => d.parent)
     let root = stratify(relationship)
 
-    // root.sum(d => {
-    //   console.log(d)
-    // })
+    root.count()
 
 
-    // if (root.children) {
-    //   return root.value += 1
+    // if (root.leaves()) {
+    //   // console.log(root)
+    //   return root.leaves.value -= 1
     // }
+
+    console.log(root.leaves())
 
     root.sort((a, b) => a.value - b.value)
     return root
   })
+  console.log(nodes)
   return d3.hierarchy(nodes)
 }
 
@@ -178,6 +180,7 @@ async function createTree() {
     .enter().append('g')
     .attr('class', 'node')
     .attr('transform', d => {
+      console.log(d)
       yPos = y_scale(d.data.data.year)
       // -------------- Refactor --------------
       if (d.data.data === og) {
