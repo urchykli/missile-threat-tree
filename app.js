@@ -1,5 +1,5 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
-let csv = './data2.csv'
+let csv = './data.csv'
 
 const margin = { top: 40, right: 20, bottom: 140, left: 20 }
 const fullWidth = 1700
@@ -26,7 +26,7 @@ async function parseData(csv) {
       }
       function parentCountry(developed) {
         console.log(developed)
-        return (developed === 'Development' ? missiles[0] : missiles[2])
+        return (developed === 'Development' || developed === 'Rename' ? missiles[0] : missiles[2])
       }
       let parentMissile = ""
       // Determine if this is the root missile
@@ -123,13 +123,13 @@ async function createTree() {
     yPosSource = y_scale(d.source.data.data.year)
     // -------------- Refactor --------------
     if (d.source.data.data === og && d.target.children) {
-      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget + yOffset)}`
+      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget)}`
     } else if (d.source.data.data === og && !d.target.children) {
-      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget - yOffset)}`
+      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget)}`
     } else if (d.source.children && d.target.children) {
-      return `M${d.source.x},${(yPosSource + yOffset)}H${d.target.x},V${(yPosTarget + yOffset)}`
+      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget)}`
     } else {
-      return `M${d.source.x},${(yPosSource + yOffset)}H${d.target.x},V${(yPosTarget - yOffset)}`
+      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget)}`
     }
   }
 
@@ -186,9 +186,9 @@ async function createTree() {
       if (d.data.data === og) {
         return "translate(" + d.x + "," + (yPos) + ")"
       } else if (d.children) {
-        return "translate(" + d.x + "," + (yPos + yOffset) + ")"
+        return "translate(" + d.x + "," + (yPos) + ")"
       } else {
-        return "translate(" + d.x + "," + (yPos - yOffset) + ")"
+        return "translate(" + d.x + "," + (yPos) + ")"
       }
     })
 
