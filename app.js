@@ -1,12 +1,12 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
 let csv = './data.csv'
 
-const margin = { top: 40, right: 20, bottom: 140, left: 20 }
+const margin = { top: 40, right: 40, bottom: 140, left: 40 }
 const fullWidth = 1700
-const fullHeight = 2000
+const fullHeight = 3000
 const width = fullWidth - margin.left - margin.right
 const height = fullHeight - margin.top - margin.bottom
-const yOffset = 35
+const yOffset = 45
 const xOffset = 10
 
 async function parseData(csv) {
@@ -56,17 +56,6 @@ async function parseData(csv) {
       .parentId(d => d.parent)
     let root = stratify(relationship)
 
-    root.count()
-
-
-    // if (root.leaves()) {
-    //   // console.log(root)
-    //   return root.leaves.value -= 1
-    // }
-
-    console.log(root.leaves())
-
-    root.sort((a, b) => a.value - b.value)
     return root
   })
   console.log(nodes)
@@ -123,13 +112,13 @@ async function createTree() {
     yPosSource = y_scale(d.source.data.data.year)
     // -------------- Refactor --------------
     if (d.source.data.data === og && d.target.children) {
-      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget)}`
+      return `M${d.source.x},${(yPosSource + yOffset)}H${d.target.x},V${(yPosTarget)}`
     } else if (d.source.data.data === og && !d.target.children) {
-      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget)}`
+      return `M${d.source.x},${(yPosSource + yOffset)}H${d.target.x},V${(yPosTarget)}`
     } else if (d.source.children && d.target.children) {
-      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget)}`
+      return `M${d.source.x},${(yPosSource + yOffset)}H${d.target.x},V${(yPosTarget)}`
     } else {
-      return `M${d.source.x},${(yPosSource)}H${d.target.x},V${(yPosTarget)}`
+      return `M${d.source.x},${(yPosSource + yOffset)}H${d.target.x},V${(yPosTarget)}`
     }
   }
 
@@ -192,8 +181,21 @@ async function createTree() {
       }
     })
 
-  node.append("circle")
-    .attr("r", 5)
+  node.append('rect')
+    .attr("width", 140)
+    .attr("height", 54)
+    .attr('x', -70)
+    .attr('y', -9)
+    // .style('stroke', 'orange')
+    .style('fill', d => {
+      let target = d.data.data.name.split(",")
+      let parent = d.data.data.parent.split(',')
+      if (parent[0] === target[0]) {
+        return "#E68A50"
+      } else {
+        return "#179699"
+      }
+    })
     .style("stroke", d => {
       let target = d.data.data.name.split(",")
       let parent = d.data.data.parent.split(',')
@@ -203,14 +205,34 @@ async function createTree() {
         return "#179699"
       }
     })
-    .style('stroke-width', d => {
-      let target = d.data.data.name.split(",")
-      let parent = d.data.data.parent.split(',')
-      if (parent[0] === target[0]) {
-        return 3
-      }
-    })
-    .style('fill', '#179699')
+
+  node.append('svg:image')
+    .attr("xlink:href", 'TESTMissiles_Vector.svg')
+    .attr("width", 140)
+    .attr("height", 140)
+    .attr('x', -70)
+    .attr('y', -70)
+
+
+  // node.append("circle")
+  //   .attr("r", 5)
+  // .style("stroke", d => {
+  //   let target = d.data.data.name.split(",")
+  //   let parent = d.data.data.parent.split(',')
+  //   if (parent[0] === target[0]) {
+  //     return "#E68A50"
+  //   } else {
+  //     return "#179699"
+  //   }
+  // })
+  //   .style('stroke-width', d => {
+  //     let target = d.data.data.name.split(",")
+  //     let parent = d.data.data.parent.split(',')
+  //     if (parent[0] === target[0]) {
+  //       return 3
+  //     }
+  //   })
+  //   .style('fill', '#179699')
   // .style("stroke", d => d.data.type)
   // .style("fill", d => d.data.level)
 
