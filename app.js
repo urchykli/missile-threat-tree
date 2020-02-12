@@ -261,7 +261,7 @@ async function createTree() {
 
 
   node.append('svg:image')
-    .attr("xlink:href", 'scud_b_c.svg')
+    .attr("xlink:href", 'ghadr.svg')
     .attr('class', 'missile-image')
     .attr("width", 100)
     .attr("height", 100)
