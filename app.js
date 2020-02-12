@@ -224,8 +224,12 @@ async function createTree() {
     tooltip.transition()
       .duration(200)
       .style("opacity", .9)
-      .style('left', (d3.event.pageX) + "px")
-      .style('top', (d3.event.pageY - 58) + "px")
+      .style('transform', `translate(`
+        + `${d3.event.pageX}px,`
+        + `${d3.event.pageY - 58}px`
+        + `)`)
+    // .style('left', (d3.event.pageX) + "px")
+    // .style('top', (d3.event.pageY - 58) + "px")
 
     tooltip.select(".tooltip-name")
       .text(name)
