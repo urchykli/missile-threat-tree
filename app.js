@@ -49,7 +49,8 @@ async function parseData(csv) {
         'inPossession': missiles[6],
         'range': missiles[7],
         'url': missiles[8],
-        'annotation': missiles[9]
+        'annotation': missiles[9],
+        'method': missiles[2]
       })
     })
     let stratify = d3.stratify()
@@ -212,6 +213,13 @@ async function createTree() {
   function onMouseEnter(data) {
     console.log(data.data.data)
     let missile = data.data.data
+    let missileInfo = missile.name.split(',')
+    // let country = missileInfo[0]
+    let name = missileInfo[1]
+    // let parentInfo = missile.parent.split(',')
+    // let parentCountry = parentInfo[0]
+    // let parentName = parentInfo[1]
+    let method = ""
 
     tooltip.transition()
       .duration(200)
@@ -220,7 +228,20 @@ async function createTree() {
       .style('top', (d3.event.pageY - 58) + "px")
 
     tooltip.select(".tooltip-name")
-      .text(missile.name)
+      .text(name)
+
+    if (!missile.parent) {
+      method = "Created"
+    } else if (missile.method === "Development") {
+      method = "Developed"
+    } else if (missile.method === "Rename") {
+      method = "Renamed"
+    } else {
+      method = "Acquired"
+    }
+
+    tooltip.select("#method")
+      .text(method)
 
     tooltip.select("#year")
       .text(missile.year)
@@ -247,28 +268,6 @@ async function createTree() {
     .attr('x', -50)
     .attr('y', -50)
 
-  // node.append("circle")
-  //   .attr("r", 5)
-  // .style("stroke", d => {
-  //   let target = d.data.data.name.split(",")
-  //   let parent = d.data.data.parent.split(',')
-  //   if (parent[0] === target[0]) {
-  //     return devColor
-  //   } else {
-  //     return acqColor
-  //   }
-  // })
-  //   .style('stroke-width', d => {
-  //     let target = d.data.data.name.split(",")
-  //     let parent = d.data.data.parent.split(',')
-  //     if (parent[0] === target[0]) {
-  //       return 3
-  //     }
-  //   })
-  //   .style('fill', '#179699')
-  // .style("stroke", d => d.data.type)
-  // .style("fill", d => d.data.level)
-
   node.append('text')
     // .attr('x', d => {
     //   if (!d.children) {
@@ -276,14 +275,7 @@ async function createTree() {
     //   }
     // })
     .attr('y', 20)
-    // .attr('y', d => {
-    //   yPos = y_scale(d.data.data.year)
-    //   if (d.children) {
-    //     return 20
-    //   } else {
-    //     return 20 - yOffset
-    //   }
-    // })
+
     .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[0]} `)
     .attr('class', 'missile-text missile-owner')
@@ -295,14 +287,6 @@ async function createTree() {
     //   }
     // })
     .attr('y', 40)
-    // .attr('y', d => {
-    //   yPos = y_scale(d.data.data.year)
-    //   if (d.children) {
-    //     return 40
-    //   } else {
-    //     return 40 - yOffset
-    //   }
-    // })
     .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[1]} `)
     .attr('class', 'missile-text missile-name')
