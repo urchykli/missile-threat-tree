@@ -1,4 +1,4 @@
-.cls-1 {
+/* .cls-1 {
   fill:#c3beb1;
 }
 
@@ -15,4 +15,40 @@
   stroke:#fff;
   stroke-miterlimit:10;
   stroke-width:0.25px;
+} */
+
+rect:hover {
+  fill: #DFE4E7!important;
+}
+
+.missile-image,
+.missile-text {
+  pointer-events: none;
+}
+
+div.tooltip {	
+  position: absolute;			
+  text-align: center;			
+  max-width: 160px;					
+  /* height: 28px;					 */
+  padding: 2px;				
+  font: 12px sans-serif;		
+  background: lightsteelblue;	
+  border: 0px;		
+  border-radius: 8px;			
+  pointer-events: none;			
+}
+
+.missile-owner {
+  font-family: Source Sans Pro;
+  font-size: 22.1px;
+  color: #5F7981;
+  font-weight: 400;
+}
+
+.missile-name {
+  font-family: Open Sans;
+  font-size: 18px;
+  color: #333333;
+  font-weight: 300;
 }

@@ -1,5 +1,5 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
-let csv = './data.csv'
+let csv = './data1.csv'
 
 const margin = { top: 40, right: 40, bottom: 140, left: 40 }
 const fullWidth = 1700
@@ -8,6 +8,8 @@ const width = fullWidth - margin.left - margin.right
 const height = fullHeight - margin.top - margin.bottom
 const yOffset = 45
 const xOffset = 10
+const devColor = "#F2C261"
+const acqColor = '#5F7981'
 
 async function parseData(csv) {
   nodes = await fetchCSV(csv).then(res => {
@@ -25,7 +27,6 @@ async function parseData(csv) {
         return (developed ? missiles[4] : missiles[3])
       }
       function parentCountry(developed) {
-        console.log(developed)
         return (developed === 'Development' || developed === 'Rename' ? missiles[0] : missiles[2])
       }
       let parentMissile = ""
@@ -58,7 +59,6 @@ async function parseData(csv) {
 
     return root
   })
-  console.log(nodes)
   return d3.hierarchy(nodes)
 }
 
@@ -74,6 +74,11 @@ async function createTree() {
 
   const minYear = d3.min(years)
   const maxYear = d3.max(years)
+
+  // Define the div for the tooltip
+  let tooltip = d3.select("#tooltip")
+    .style("opacity", 0)
+    .style("position", 'absolute');
 
   let y_scale = d3.scaleLinear()
     .domain([minYear, maxYear])
@@ -145,9 +150,9 @@ async function createTree() {
       let target = d.target.data.id.split(",")
       let parent = d.target.data.data.parent.split(',')
       if (parent[0] === target[0]) {
-        return "#E68A50"
+        return devColor
       } else {
-        return "#179699"
+        return acqColor
       }
     })
     .attr("stroke-width", d => {
@@ -169,7 +174,6 @@ async function createTree() {
     .enter().append('g')
     .attr('class', 'node')
     .attr('transform', d => {
-      console.log(d)
       yPos = y_scale(d.data.data.year)
       // -------------- Refactor --------------
       if (d.data.data === og) {
@@ -181,38 +185,67 @@ async function createTree() {
       }
     })
 
-  node.append('rect')
-    .attr("width", 140)
+  let rects = node.append('rect')
+    .attr("width", 100)
     .attr("height", 54)
-    .attr('x', -70)
+    .attr('x', -50)
     .attr('y', -9)
-    // .style('stroke', 'orange')
     .style('fill', d => {
       let target = d.data.data.name.split(",")
       let parent = d.data.data.parent.split(',')
       if (parent[0] === target[0]) {
-        return "#E68A50"
+        return devColor
       } else {
-        return "#179699"
+        return acqColor
       }
     })
     .style("stroke", d => {
       let target = d.data.data.name.split(",")
       let parent = d.data.data.parent.split(',')
       if (parent[0] === target[0]) {
-        return "#E68A50"
+        return devColor
       } else {
-        return "#179699"
+        return acqColor
       }
     })
 
-  node.append('svg:image')
-    .attr("xlink:href", 'TESTMissiles_Vector.svg')
-    .attr("width", 140)
-    .attr("height", 140)
-    .attr('x', -70)
-    .attr('y', -70)
+  function onMouseEnter(data) {
+    console.log(data.data.data)
+    let missile = data.data.data
 
+    tooltip.transition()
+      .duration(200)
+      .style("opacity", .9)
+      .style('left', (d3.event.pageX) + "px")
+      .style('top', (d3.event.pageY - 58) + "px")
+
+    tooltip.select(".tooltip-name")
+      .text(missile.name)
+
+    tooltip.select("#year")
+      .text(missile.year)
+
+    tooltip.select('.tooltip-annotation')
+      .text(missile.annotation)
+  }
+
+  function onMouseOut(d) {
+    tooltip.transition()
+      .duration(500)
+      .style("opacity", 0)
+  }
+
+  rects.on("mouseenter", onMouseEnter)
+    .on("mouseout", onMouseOut)
+
+
+  node.append('svg:image')
+    .attr("xlink:href", 'scud_b_c.svg')
+    .attr('class', 'missile-image')
+    .attr("width", 100)
+    .attr("height", 100)
+    .attr('x', -50)
+    .attr('y', -50)
 
   // node.append("circle")
   //   .attr("r", 5)
@@ -220,9 +253,9 @@ async function createTree() {
   //   let target = d.data.data.name.split(",")
   //   let parent = d.data.data.parent.split(',')
   //   if (parent[0] === target[0]) {
-  //     return "#E68A50"
+  //     return devColor
   //   } else {
-  //     return "#179699"
+  //     return acqColor
   //   }
   // })
   //   .style('stroke-width', d => {
@@ -237,11 +270,11 @@ async function createTree() {
   // .style("fill", d => d.data.level)
 
   node.append('text')
-    .attr('x', d => {
-      if (!d.children) {
-        return xOffset
-      }
-    })
+    // .attr('x', d => {
+    //   if (!d.children) {
+    //     return xOffset
+    //   }
+    // })
     .attr('y', 20)
     // .attr('y', d => {
     //   yPos = y_scale(d.data.data.year)
@@ -253,14 +286,14 @@ async function createTree() {
     // })
     .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[0]} `)
-    .attr('class', 'text')
+    .attr('class', 'missile-text missile-owner')
 
   node.append('text')
-    .attr('x', d => {
-      if (!d.children) {
-        return xOffset
-      }
-    })
+    // .attr('x', d => {
+    //   if (!d.children) {
+    //     return xOffset
+    //   }
+    // })
     .attr('y', 40)
     // .attr('y', d => {
     //   yPos = y_scale(d.data.data.year)
@@ -272,7 +305,7 @@ async function createTree() {
     // })
     .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[1]} `)
-    .attr('class', 'text')
+    .attr('class', 'missile-text missile-name')
 }
 function fetchCSV(src) {
   return d3.csv(src, d => {
