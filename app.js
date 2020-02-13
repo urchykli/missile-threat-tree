@@ -1,5 +1,5 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
-let csv = './data1.csv'
+let csv = './data.csv'
 
 const margin = { top: 40, right: 40, bottom: 140, left: 40 }
 const fullWidth = 1700
@@ -50,7 +50,8 @@ async function parseData(csv) {
         'range': missiles[7],
         'url': missiles[8],
         'annotation': missiles[9],
-        'method': missiles[2]
+        'method': missiles[2],
+        'icon': missiles[10]
       })
     })
     let stratify = d3.stratify()
@@ -187,9 +188,9 @@ async function createTree() {
     })
 
   let rects = node.append('rect')
-    .attr("width", 100)
+    .attr("width", 200)
     .attr("height", 54)
-    .attr('x', -50)
+    .attr('x', -100)
     .attr('y', -9)
     .style('fill', d => {
       let target = d.data.data.name.split(",")
@@ -264,22 +265,31 @@ async function createTree() {
     .on("mouseout", onMouseOut)
 
 
-  node.append('svg:image')
-    .attr("xlink:href", 'ghadr.svg')
-    .attr('class', 'missile-image')
-    .attr("width", 100)
-    .attr("height", 100)
-    .attr('x', -50)
-    .attr('y', -50)
+  // node.append('svg:image')
+  //   .attr("xlink:href", 'hwasong6.svg')
+  //   .attr('class', 'missile-image')
+  //   .attr("width", 200)
+  //   .attr("height", 200)
+  //   .attr('x', -50)
+  //   .attr('y', -50)
+
+
+
+  node.append("use")
+    // .attr("xlink:href", `./missiles/symbol-defs.svg#icon-${icon}`)
+    .attr("xlink:href", d => {
+      console.log(d)
+      let icon = d.data.data.icon
+      return `./missiles/symbol-defs.svg#icon-${icon}`
+    })
+    .attr("width", 200)
+    .attr("height", 200)
+    .attr('x', -100)
+    .attr('y', -85)
+
 
   node.append('text')
-    // .attr('x', d => {
-    //   if (!d.children) {
-    //     return xOffset
-    //   }
-    // })
     .attr('y', 20)
-
     .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[0]} `)
     .attr('class', 'missile-text missile-owner')

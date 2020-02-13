@@ -33,23 +33,23 @@ div.tooltip {
   /* height: 28px;					 */
   padding: 2px;				
   font: 12px sans-serif;		
-  background: #5F7981;
+  background: #07344A;
   color: #F0F3F5;	
   border: 0px;		
   border-radius: 8px;			
   pointer-events: none;			
 }
 
-.missile-owner {
+.missile-text {
   font-family: Source Sans Pro;
   font-size: 22.1px;
-  color: #5F7981;
+  fill: #07344A;
   font-weight: 400;
 }
 
 .missile-name {
   font-family: Open Sans;
   font-size: 18px;
-  color: #333333;
+  fill: #07344A;
   font-weight: 300;
 }
