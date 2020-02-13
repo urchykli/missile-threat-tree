@@ -10,6 +10,15 @@ const yOffset = 45
 const xOffset = 10
 const devColor = "#F2C261"
 const acqColor = '#5F7981'
+const types = []
+const typeColors = [
+  '#5F7981',
+  "#F2C261",
+  '#07344A',
+  '#4A2C07',
+  '#076796'
+]
+typeObj = []
 
 async function parseData(csv) {
   nodes = await fetchCSV(csv).then(res => {
@@ -17,6 +26,14 @@ async function parseData(csv) {
     let parent = []
     let relationship = []
     res.forEach(missiles => {
+      let inherited = missiles[1]
+      let year = missiles[5]
+      let inPossession = missiles[6]
+      let type = missiles[7]
+      let url = missiles[8]
+      let annotation = missiles[9]
+      let method = missiles[2]
+      let icon = missiles[10]
       // Create child missile name
       let childMissile = missiles[0] + ',' + missiles[3]
 
@@ -44,16 +61,26 @@ async function parseData(csv) {
       relationship.push({
         'name': childMissile,
         'parent': parentMissile,
-        'inherited': missiles[1],
-        'year': missiles[5],
-        'inPossession': missiles[6],
-        'range': missiles[7],
-        'url': missiles[8],
-        'annotation': missiles[9],
-        'method': missiles[2],
-        'icon': missiles[10]
+        inherited,
+        year,
+        inPossession,
+        type,
+        url,
+        annotation,
+        method,
+        icon
+      })
+
+      types[type] = types[type] ||
+        types.push(type)
+    })
+    types.forEach((type, i) => {
+      typeObj.push({
+        name: type,
+        color: typeColors[i]
       })
     })
+
     let stratify = d3.stratify()
       .id(d => d.name)
       .parentId(d => d.parent)
@@ -63,6 +90,9 @@ async function parseData(csv) {
   })
   return d3.hierarchy(nodes)
 }
+
+
+
 
 async function createTree() {
 
@@ -148,15 +178,16 @@ async function createTree() {
     .enter().append('path')
     .attr('class', 'link')
     .attr("fill", "none")
-    .attr("stroke", d => {
-      let target = d.target.data.id.split(",")
-      let parent = d.target.data.data.parent.split(',')
-      if (parent[0] === target[0]) {
-        return devColor
-      } else {
-        return acqColor
-      }
-    })
+    .attr("stroke", '#07344A')
+    // .attr("stroke", d => {
+    //   let target = d.target.data.id.split(",")
+    //   let parent = d.target.data.data.parent.split(',')
+    //   if (parent[0] === target[0]) {
+    //     return devColor
+    //   } else {
+    //     return acqColor
+    //   }
+    // })
     .attr("stroke-width", d => {
       let target = d.target.data.id.split(",")
       let parent = d.target.data.data.parent.split(',')
@@ -193,23 +224,29 @@ async function createTree() {
     .attr('x', -100)
     .attr('y', -9)
     .style('fill', d => {
-      let target = d.data.data.name.split(",")
-      let parent = d.data.data.parent.split(',')
-      if (parent[0] === target[0]) {
-        return devColor
-      } else {
-        return acqColor
-      }
+      let type = d.data.data.type
+      console.log(typeObj)
+      return typeObj[type]
+
     })
-    .style("stroke", d => {
-      let target = d.data.data.name.split(",")
-      let parent = d.data.data.parent.split(',')
-      if (parent[0] === target[0]) {
-        return devColor
-      } else {
-        return acqColor
-      }
-    })
+  // .style('fill', d => {
+  //   let target = d.data.data.name.split(",")
+  //   let parent = d.data.data.parent.split(',')
+  //   if (parent[0] === target[0]) {
+  //     return devColor
+  //   } else {
+  //     return acqColor
+  //   }
+  // })
+  // .style("stroke", d => {
+  //   let target = d.data.data.name.split(",")
+  //   let parent = d.data.data.parent.split(',')
+  //   if (parent[0] === target[0]) {
+  //     return devColor
+  //   } else {
+  //     return acqColor
+  //   }
+  // })
 
   function onMouseEnter(data) {
     console.log(data.data.data)
@@ -278,7 +315,6 @@ async function createTree() {
   node.append("use")
     // .attr("xlink:href", `./missiles/symbol-defs.svg#icon-${icon}`)
     .attr("xlink:href", d => {
-      console.log(d)
       let icon = d.data.data.icon
       return `./missiles/symbol-defs.svg#icon-${icon}`
     })
