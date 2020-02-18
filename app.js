@@ -167,13 +167,6 @@ async function createTree() {
   let treeNodes = tree(data)
   let nodes = treeNodes.leaves(data)
 
-
-  // treeNodes.count()
-  //   .sort((a, b) => {
-  //     return a.value - b.value
-  //   })
-  // console.log(treeNodes)
-
   const link = g.selectAll('.link')
     .data(treeNodes.links())
     .enter().append('path')
@@ -224,11 +217,34 @@ async function createTree() {
     .attr("height", 54)
     .attr('x', -100)
     .attr('y', -9)
+    .attr('class', 'tippyTips')
     .style('fill', d => {
       let type = d.data.data.type
       return obj[type]
-
     })
+
+
+
+  tippy(".tippyTips", {
+    onShow(instance) {
+      console.log(rects)
+    }
+  })
+
+
+
+  // const tips = document.querySelectorAll('.tippyTips')
+
+  // tippy(tips)
+  // const tip = tips._tippy
+
+
+  // tip.setContent("hi")
+
+  if (!SVGElement.prototype.contains) {
+    SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
+  }
+
   // .style('fill', d => {
   //   let target = d.data.data.name.split(",")
   //   let parent = d.data.data.parent.split(',')
@@ -248,57 +264,57 @@ async function createTree() {
   //   }
   // })
 
-  function onMouseEnter(data) {
-    let missile = data.data.data
-    let missileInfo = missile.name.split(',')
-    // let country = missileInfo[0]
-    let name = missileInfo[1]
-    // let parentInfo = missile.parent.split(',')
-    // let parentCountry = parentInfo[0]
-    // let parentName = parentInfo[1]
-    let method = ""
+  // function onMouseEnter(data) {
+  //   let missile = data.data.data
+  //   let missileInfo = missile.name.split(',')
+  //   // let country = missileInfo[0]
+  //   let name = missileInfo[1]
+  //   // let parentInfo = missile.parent.split(',')
+  //   // let parentCountry = parentInfo[0]
+  //   // let parentName = parentInfo[1]
+  //   let method = ""
 
-    tooltip.transition()
-      .duration(200)
-      .style("opacity", .9)
-      .style('transform', `translate(`
-        + `${d3.event.pageX}px,`
-        + `${d3.event.pageY - 58}px`
-        + `)`)
-    // .style('left', (d3.event.pageX) + "px")
-    // .style('top', (d3.event.pageY - 58) + "px")
+  //   tooltip.transition()
+  //     .duration(200)
+  //     .style("opacity", .9)
+  //     .style('transform', `translate(`
+  //       + `${d3.event.pageX}px,`
+  //       + `${d3.event.pageY - 58}px`
+  //       + `)`)
+  //   // .style('left', (d3.event.pageX) + "px")
+  //   // .style('top', (d3.event.pageY - 58) + "px")
 
-    tooltip.select(".tooltip-name")
-      .text(name)
+  //   if (!missile.parent) {
+  //     method = "Created"
+  //   } else if (missile.method === "Development") {
+  //     method = "Developed"
+  //   } else if (missile.method === "Rename") {
+  //     method = "Renamed"
+  //   } else {
+  //     method = "Acquired"
+  //   }
 
-    if (!missile.parent) {
-      method = "Created"
-    } else if (missile.method === "Development") {
-      method = "Developed"
-    } else if (missile.method === "Rename") {
-      method = "Renamed"
-    } else {
-      method = "Acquired"
-    }
+  //   tooltip.select('.tooltip-name')
+  //     .text(name)
 
-    tooltip.select("#method")
-      .text(method)
+  //   tooltip.select("#method")
+  //     .text(method)
 
-    tooltip.select("#year")
-      .text(missile.year)
+  //   tooltip.select("#year")
+  //     .text(missile.year)
 
-    tooltip.select('.tooltip-annotation')
-      .text(missile.annotation)
-  }
+  //   tooltip.select('.tooltip-annotation')
+  //     .text(missile.annotation)
+  // }
 
-  function onMouseOut(d) {
-    tooltip.transition()
-      .duration(500)
-      .style("opacity", 0)
-  }
+  // function onMouseOut(d) {
+  //   tooltip.transition()
+  //     .duration(500)
+  //     .style("opacity", 0)
+  // }
 
-  rects.on("mouseenter", onMouseEnter)
-    .on("mouseout", onMouseOut)
+  // rects.on("mouseenter", onMouseEnter)
+  // .on("mouseout", onMouseOut)
 
 
   // node.append('svg:image')
