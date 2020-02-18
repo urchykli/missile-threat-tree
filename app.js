@@ -18,7 +18,8 @@ const typeColors = [
   '#4A2C07',
   '#076796'
 ]
-typeObj = []
+let typeObj = []
+let obj = {}
 
 async function parseData(csv) {
   nodes = await fetchCSV(csv).then(res => {
@@ -71,13 +72,13 @@ async function parseData(csv) {
         icon
       })
 
-      types[type] = types[type] ||
+      if (!types.includes(type)) {
         types.push(type)
-    })
-    types.forEach((type, i) => {
-      typeObj.push({
-        name: type,
-        color: typeColors[i]
+      }
+
+      types.forEach((type, i) => {
+        let typeVal = typeColors[i]
+        obj[type] = typeVal
       })
     })
 
@@ -225,8 +226,7 @@ async function createTree() {
     .attr('y', -9)
     .style('fill', d => {
       let type = d.data.data.type
-      console.log(typeObj)
-      return typeObj[type]
+      return obj[type]
 
     })
   // .style('fill', d => {
@@ -249,7 +249,6 @@ async function createTree() {
   // })
 
   function onMouseEnter(data) {
-    console.log(data.data.data)
     let missile = data.data.data
     let missileInfo = missile.name.split(',')
     // let country = missileInfo[0]
@@ -313,12 +312,12 @@ async function createTree() {
 
 
   node.append("use")
-    // .attr("xlink:href", `./missiles/symbol-defs.svg#icon-${icon}`)
     .attr("xlink:href", d => {
       let icon = d.data.data.icon
       return `./missiles/symbol-defs.svg#icon-${icon}`
     })
     .attr("width", 200)
+    .attr('class', 'missile-image')
     .attr("height", 200)
     .attr('x', -100)
     .attr('y', -85)
