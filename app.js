@@ -29,16 +29,11 @@ async function parseData(csv) {
     let parent = []
     let relationship = []
     res.forEach(missiles => {
-      let inherited = missiles[1]
-      let year = missiles[5]
-      let inPossession = missiles[6]
-      let type = missiles[7]
-      let url = missiles[8]
-      let annotation = missiles[9]
-      let method = missiles[2]
-      let icon = missiles[10]
-      // Create child missile name
+
+      // // Create child missile name
       let childMissile = missiles[0] + ',' + missiles[3]
+
+      let [country, inherited, method, missile, derivative, year, inPossession, type, url, annotation, icon] = missiles
 
       // Push child missile name to child array
       child.push(childMissile)
@@ -232,6 +227,7 @@ async function createTree() {
     .attr('x', -100)
     .attr('y', -9)
     .attr('class', 'tippyTips')
+    // .attr('id', 'parent')
     .style('fill', d => {
       let type = d.data.data.type
       return obj[type]
@@ -292,38 +288,26 @@ async function createTree() {
 
 
     const node = document.importNode(tooltip.content, true)
+    // Accessibility
+    tooltip.setAttribute("aria-expanded", true)
 
     container.appendChild(node)
 
-
     tooltipInstance = tippy(this, {
-      content: container.innerHTML
+      content: container.innerHTML,
+      // appendTo: 'parent',
+      popperOptions: {
+        positionFixed: true
+      }
     })
-  }
-  function setTooltipContent(data) {
-    console.log(data)
-    // tooltip.content.querySelector('.tooltip__heading').innerHTML = `${data}`
   }
 
   function onMouseLeave(d) {
-    // tooltip.transition()
-    //   .duration(500)
-    //   .style("opacity", 0)
+    tooltip.setAttribute("aria-expanded", false)
   }
 
   rects.on("mouseover", onMouseover)
     .on("mouseleave", onMouseLeave)
-
-
-  // node.append('svg:image')
-  //   .attr("xlink:href", 'hwasong6.svg')
-  //   .attr('class', 'missile-image')
-  //   .attr("width", 200)
-  //   .attr("height", 200)
-  //   .attr('x', -50)
-  //   .attr('y', -50)
-
-
 
   node.append("use")
     .attr("xlink:href", d => {
