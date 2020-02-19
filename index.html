@@ -11,14 +11,21 @@
 </head>
 
 <body>
-  <div id="tooltip" class="tooltip">
+  <!-- <div id="tooltip" class="tooltip">
     <div class="tooltip-name"></div>
     <div class="tooltip-year">
       <span id="method"></span> in <span id="year"></span>
     </div>
     <div class="tooltip-annotation"></div>
-  </div>
+  </div> -->
   <div id="chart"></div>
+  <template id="tooltip" aria-expanded="false">
+    <button class="btn btn--close tooltip-close" aria-label="Close tooltip"></button>
+    <h1 class="tooltip__heading"></h1>
+    <p class="tooltip__acquisition"><span class="tooltip__method"></span> in <span class="tooltip__year"></span></p>
+    <p class="tooltip__annotation"></p>
+    <p class="tooltip__more-info">Click for more details.</p>
+  </template>
   <script src="https://unpkg.com/popper.js@1"></script>
   <script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.iife.js"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>

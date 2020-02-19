@@ -53,3 +53,7 @@ div.tooltip {
   fill: #F0F3F5;
   font-weight: 300;
 }
+
+.btn--close {
+  display: none;
+}

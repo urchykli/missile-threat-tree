@@ -21,6 +21,8 @@ const typeColors = [
 let typeObj = []
 let obj = {}
 
+
+
 async function parseData(csv) {
   nodes = await fetchCSV(csv).then(res => {
     let child = []
@@ -109,9 +111,21 @@ async function createTree() {
   const maxYear = d3.max(years)
 
   // Define the div for the tooltip
-  let tooltip = d3.select("#tooltip")
-    .style("opacity", 0)
-    .style("position", 'absolute');
+  let tooltip = document.getElementById('tooltip')
+
+  tippy.setDefaultProps({
+    animation: 'fade',
+    hideOnClick: true,
+    // interactive: true,
+    onMount(tip) {
+      let close = document.querySelector('.tooltip-close')
+
+      if (!close) return
+      close.addEventListener('click', () => {
+        tip.hide()
+      })
+    }
+  })
 
   let y_scale = d3.scaleLinear()
     .domain([minYear, maxYear])
@@ -223,24 +237,6 @@ async function createTree() {
       return obj[type]
     })
 
-
-
-  tippy(".tippyTips", {
-    onShow(instance) {
-      console.log(rects)
-    }
-  })
-
-
-
-  // const tips = document.querySelectorAll('.tippyTips')
-
-  // tippy(tips)
-  // const tip = tips._tippy
-
-
-  // tip.setContent("hi")
-
   if (!SVGElement.prototype.contains) {
     SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
   }
@@ -264,57 +260,59 @@ async function createTree() {
   //   }
   // })
 
-  // function onMouseEnter(data) {
-  //   let missile = data.data.data
-  //   let missileInfo = missile.name.split(',')
-  //   // let country = missileInfo[0]
-  //   let name = missileInfo[1]
-  //   // let parentInfo = missile.parent.split(',')
-  //   // let parentCountry = parentInfo[0]
-  //   // let parentName = parentInfo[1]
-  //   let method = ""
+  let tooltipInstance
 
-  //   tooltip.transition()
-  //     .duration(200)
-  //     .style("opacity", .9)
-  //     .style('transform', `translate(`
-  //       + `${d3.event.pageX}px,`
-  //       + `${d3.event.pageY - 58}px`
-  //       + `)`)
-  //   // .style('left', (d3.event.pageX) + "px")
-  //   // .style('top', (d3.event.pageY - 58) + "px")
+  function onMouseover(data) {
+    let missile = data.data.data
+    let missileInfo = missile.name.split(',')
+    // let country = missileInfo[0]
+    let name = missileInfo[1]
+    // let parentInfo = missile.parent.split(',')
+    // let parentCountry = parentInfo[0]
+    // let parentName = parentInfo[1]
+    let method = ""
 
-  //   if (!missile.parent) {
-  //     method = "Created"
-  //   } else if (missile.method === "Development") {
-  //     method = "Developed"
-  //   } else if (missile.method === "Rename") {
-  //     method = "Renamed"
-  //   } else {
-  //     method = "Acquired"
-  //   }
+    if (!missile.parent) {
+      method = "Created"
+    } else if (missile.method === "Development") {
+      method = "Developed"
+    } else if (missile.method === "Rename") {
+      method = "Renamed"
+    } else {
+      method = "Acquired"
+    }
 
-  //   tooltip.select('.tooltip-name')
-  //     .text(name)
+    const container = document.createElement('div')
+    container.setAttribute("id", "parent")
 
-  //   tooltip.select("#method")
-  //     .text(method)
+    tooltip.content.querySelector('.tooltip__heading').innerHTML = name
+    tooltip.content.querySelector('.tooltip__method').innerHTML = method
+    tooltip.content.querySelector('.tooltip__year').innerHTML = missile.year
+    tooltip.content.querySelector('.tooltip__annotation').innerHTML = missile.annotation
 
-  //   tooltip.select("#year")
-  //     .text(missile.year)
 
-  //   tooltip.select('.tooltip-annotation')
-  //     .text(missile.annotation)
-  // }
+    const node = document.importNode(tooltip.content, true)
 
-  // function onMouseOut(d) {
-  //   tooltip.transition()
-  //     .duration(500)
-  //     .style("opacity", 0)
-  // }
+    container.appendChild(node)
 
-  // rects.on("mouseenter", onMouseEnter)
-  // .on("mouseout", onMouseOut)
+
+    tooltipInstance = tippy(this, {
+      content: container.innerHTML
+    })
+  }
+  function setTooltipContent(data) {
+    console.log(data)
+    // tooltip.content.querySelector('.tooltip__heading').innerHTML = `${data}`
+  }
+
+  function onMouseLeave(d) {
+    // tooltip.transition()
+    //   .duration(500)
+    //   .style("opacity", 0)
+  }
+
+  rects.on("mouseover", onMouseover)
+    .on("mouseleave", onMouseLeave)
 
 
   // node.append('svg:image')
