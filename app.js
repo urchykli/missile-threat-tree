@@ -111,7 +111,7 @@ async function createTree() {
   tippy.setDefaultProps({
     animation: 'fade',
     hideOnClick: true,
-    // interactive: true,
+    interactive: true,
     onMount(tip) {
       let close = document.querySelector('.tooltip-close')
 
@@ -143,6 +143,7 @@ async function createTree() {
     .append('svg')
     .attr('width', fullWidth)
     .attr('height', fullHeight)
+    .attr('role', 'presentation')
 
   const g = svg.append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`)
@@ -180,17 +181,11 @@ async function createTree() {
     .data(treeNodes.links())
     .enter().append('path')
     .attr('class', 'link')
+    // .attr('id', d => {
+    //   return ("link" + d.source.data.id + "-" + d.target.data.id)
+    // })
     .attr("fill", "none")
     .attr("stroke", '#07344A')
-    // .attr("stroke", d => {
-    //   let target = d.target.data.id.split(",")
-    //   let parent = d.target.data.data.parent.split(',')
-    //   if (parent[0] === target[0]) {
-    //     return devColor
-    //   } else {
-    //     return acqColor
-    //   }
-    // })
     .attr("stroke-width", d => {
       let target = d.target.data.id.split(",")
       let parent = d.target.data.data.parent.split(',')
@@ -227,7 +222,9 @@ async function createTree() {
     .attr('x', -100)
     .attr('y', -9)
     .attr('class', 'tippyTips')
-    // .attr('id', 'parent')
+    // .attr('id', d => {
+    //   return 'node' + d.data.id
+    // })
     .style('fill', d => {
       let type = d.data.data.type
       return obj[type]
@@ -237,28 +234,10 @@ async function createTree() {
     SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
   }
 
-  // .style('fill', d => {
-  //   let target = d.data.data.name.split(",")
-  //   let parent = d.data.data.parent.split(',')
-  //   if (parent[0] === target[0]) {
-  //     return devColor
-  //   } else {
-  //     return acqColor
-  //   }
-  // })
-  // .style("stroke", d => {
-  //   let target = d.data.data.name.split(",")
-  //   let parent = d.data.data.parent.split(',')
-  //   if (parent[0] === target[0]) {
-  //     return devColor
-  //   } else {
-  //     return acqColor
-  //   }
-  // })
-
   let tooltipInstance
 
   function onMouseover(data) {
+    console.log(data)
     let missile = data.data.data
     let missileInfo = missile.name.split(',')
     // let country = missileInfo[0]
@@ -295,11 +274,21 @@ async function createTree() {
 
     tooltipInstance = tippy(this, {
       content: container.innerHTML,
-      // appendTo: 'parent',
-      popperOptions: {
-        positionFixed: true
-      }
+      appendTo: document.body
+      // popperOptions: {
+      //   positionFixed: true
+      // }
     })
+
+    // rects.style('fill', 'white')
+    // link.style('stroke', "#c3c3c3")
+    // while (data.parent) {
+    //   d3.selectAll('#node' + data.parent.id).style('fill', 'red')
+    //   if (data.parent != 'null') {
+    //     d3.selectAll("#link" + data.parent.id + "-" + data.data.id).style("stroke", 'red')
+    //     data = data.data.parent
+    //   }
+    // }
   }
 
   function onMouseLeave(d) {
