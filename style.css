@@ -57,3 +57,8 @@ div.tooltip {
 .btn--close {
   display: none;
 }
+
+.tooltip__more-info {
+  color: #F0F3F5;
+}
+

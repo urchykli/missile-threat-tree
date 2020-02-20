@@ -264,6 +264,7 @@ async function createTree() {
     tooltip.content.querySelector('.tooltip__method').innerHTML = method
     tooltip.content.querySelector('.tooltip__year').innerHTML = missile.year
     tooltip.content.querySelector('.tooltip__annotation').innerHTML = missile.annotation
+    tooltip.content.querySelector('.tooltip__more-info').setAttribute('href', missile.url)
 
 
     const node = document.importNode(tooltip.content, true)
