@@ -1,5 +1,5 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
-let csv = './data.csv'
+let csv = './data2.csv'
 
 const margin = { top: 40, right: 40, bottom: 140, left: 40 }
 const fullWidth = 1700
@@ -193,6 +193,16 @@ async function createTree() {
         return 3
       }
     })
+    .attr('data-legend', d => {
+      let method = d.target.data.data.method
+      if (method === "Development") {
+        return 'Developed'
+      } else if (method === "Rename") {
+        return 'Renamed'
+      } else {
+        return 'Acquired'
+      }
+    })
     .attr("d", elbow)
     .style('stroke-dasharray', d => {
       if (d.target.data.data.inherited) {
@@ -229,6 +239,12 @@ async function createTree() {
       let type = d.data.data.type
       return obj[type]
     })
+
+  legend = svg.append("g")
+    .attr("class", "legend")
+    // .attr("transform", "translate(50,30)")
+    .style("font-size", "12px")
+  // .call(d3.legend)
 
   if (!SVGElement.prototype.contains) {
     SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
