@@ -85,7 +85,7 @@ div.tooltip {
   margin-right: 2rem;
 }
 
-.legend::before {
+.legend__item::before {
   content: '';
   position: relative;
   top: 2px;
@@ -93,6 +93,22 @@ div.tooltip {
   width: 0.9rem;
   height: 0.9rem;
   margin-right: 0.5rem;
-  /* background: $off-white; */
   border-radius: 50%;
+}
+
+.legend__item--SRBM::before {
+  background: #5F7981;
+}
+
+.legend__item--MRBM::before {
+background: #F2C261;
+}
+.legend__item--IRBM::before {
+background: #07344A;
+}
+.legend__item--ICBM::before {
+background: #4A2C07;
+}
+.legend__item--SLV::before {
+background: #076796;
 }
