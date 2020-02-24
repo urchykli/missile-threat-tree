@@ -11,13 +11,19 @@
 </head>
 
 <body>
-  <!-- <div id="tooltip" class="tooltip">
-    <div class="tooltip-name"></div>
-    <div class="tooltip-year">
-      <span id="method"></span> in <span id="year"></span>
-    </div>
-    <div class="tooltip-annotation"></div>
-  </div> -->
+  <ul class="legend legend__colors">
+    <li class="legend__item legend__item--ICBM">ICBM</li>
+    <li class="legend__item legend__item--IRBM">IRBM</li>
+    <li class="legend__item legend__item--MRBM">MRBM</li>
+    <li class="legend__item legend__item--SLV">SLV</li>
+    <li class="legend__item legend__item--SRBM">SRBM</li>
+  </ul>
+  <ul class="legend legend__lines">
+    <li class="legend__item legend__item--acquired">Acquired</li>
+    <li class="legend__item legend__item--developed">Developed</li>
+    <li class="legend__item legend__item--Inherited">Inherited</li>
+    <li class="legend__item legend__item--Renamed">Renamed</li>
+  </ul>
   <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv"
     class="sr-only">Download the data for the proliferation of the Scud missile.</a>
   <div id="chart"></div>

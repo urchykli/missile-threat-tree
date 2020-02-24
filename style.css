@@ -71,3 +71,28 @@ div.tooltip {
   white-space: nowrap; 
   width: 1px;
 }
+
+.legend {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.legend__item {
+  position: relative;
+  margin-right: 2rem;
+}
+
+.legend::before {
+  content: '';
+  position: relative;
+  top: 2px;
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-right: 0.5rem;
+  /* background: $off-white; */
+  border-radius: 50%;
+}
