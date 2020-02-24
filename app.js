@@ -130,6 +130,7 @@ async function createTree() {
     .scale(y_scale)
     .tickFormat(d3.format('d'))
 
+
   y_axis.tickSize(-2000)
 
   const tree = d3.tree()
@@ -150,6 +151,7 @@ async function createTree() {
 
   g.append('g')
     .call(y_axis)
+    .attr('stroke-opacity', .2)
 
   g.selectAll(".tick text")
     .attr('font-size', '20')
@@ -187,25 +189,21 @@ async function createTree() {
     .attr("fill", "none")
     .attr("stroke", '#07344A')
     .attr("stroke-width", d => {
+      let method = d.target.data.data.method
       let target = d.target.data.id.split(",")
       let parent = d.target.data.data.parent.split(',')
-      if (parent[0] === target[0]) {
+      // if (parent[0] === target[0]) {
+      //   return 3
+      // }
+      if (method === "Development" || method === "Rename") {
         return 3
-      }
-    })
-    .attr('data-legend', d => {
-      let method = d.target.data.data.method
-      if (method === "Development") {
-        return 'Developed'
-      } else if (method === "Rename") {
-        return 'Renamed'
-      } else {
-        return 'Acquired'
       }
     })
     .attr("d", elbow)
     .style('stroke-dasharray', d => {
-      if (d.target.data.data.inherited) {
+      let method = d.target.data.data.method
+      console.log(method)
+      if (d.target.data.data.inherited || method === "Rename") {
         return ('10.3')
       }
     })

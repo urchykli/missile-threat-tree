@@ -80,12 +80,13 @@ div.tooltip {
   margin: 0 auto;
 }
 
-.legend__item {
+.legend__item__colors,
+.legend__item__lines {
   position: relative;
   margin-right: 2rem;
 }
 
-.legend__item::before {
+.legend__item__colors::before {
   content: '';
   position: relative;
   top: 2px;
@@ -111,4 +112,35 @@ background: #4A2C07;
 }
 .legend__item--SLV::before {
 background: #076796;
+}
+
+.legend__item__lines::before {
+  position: relative;
+  display: inline-block;
+  width: 1rem;
+  height: 0.9rem;
+  margin-right: 0.5rem;
+  color: #07344A;
+  /* border-radius: 50%; */
+}
+
+.legend__item--acquired::before {
+  content: '';
+  border-top: 1px solid #07344A;
+  height: 0.3rem;
+}
+.legend__item--developed::before {
+  content: '';
+  border-top: 3px solid #07344A;
+  height: 0.3rem;
+}
+.legend__item--inherited::before {
+  content: '';
+  border-top: 1px dashed #07344A;
+  height: 0.3rem;
+}
+.legend__item--renamed::before {
+  content: '';
+  border-top: 3px dashed #07344A;
+  height: 0.3rem;
 }
