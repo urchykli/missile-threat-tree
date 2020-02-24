@@ -35,8 +35,25 @@ div.tooltip {
   font-weight: 300;
 }
 
-.btn--close {
-  display: none;
+.tooltip-close {
+  color: white;
+  position: absolute;
+  top: 0.25rem;
+  right: 0;
+  z-index: 25;
+  display: block;
+  width: 20px;
+  height: 20px;
+  text-align: right;
+  pointer-events: all;
+  background-color: transparent;
+  border: none;
+}
+
+@media only screen and (min-width:600px) {
+  .tooltip-close {
+    display: none;
+  }
 }
 
 .tooltip__more-info {
