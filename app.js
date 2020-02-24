@@ -33,7 +33,7 @@ async function parseData(csv) {
       // // Create child missile name
       let childMissile = missiles[0] + ',' + missiles[3]
 
-      let [country, inherited, method, missile, derivative, year, inPossession, type, url, annotation, icon] = missiles
+      let [country, inherited, method, missile, derivative, year, inPossession, type, url, annotation, icon, mobile] = missiles
 
       // Push child missile name to child array
       child.push(childMissile)
@@ -66,7 +66,8 @@ async function parseData(csv) {
         url,
         annotation,
         method,
-        icon
+        icon,
+        mobile
       })
 
       if (!types.includes(type)) {
