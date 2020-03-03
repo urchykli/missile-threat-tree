@@ -1,8 +1,8 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
-let csv = './data2.csv'
+let csv = './data3.csv'
 
 const margin = { top: 40, right: 40, bottom: 140, left: 40 }
-const fullWidth = 1700
+const fullWidth = 1200
 const fullHeight = 3000
 const width = fullWidth - margin.left - margin.right
 const height = fullHeight - margin.top - margin.bottom
@@ -28,12 +28,17 @@ async function parseData(csv) {
     let child = []
     let parent = []
     let relationship = []
+    let years = {}
     res.forEach(missiles => {
 
       // // Create child missile name
       let childMissile = missiles[0] + ',' + missiles[3]
 
-      let [country, inherited, method, missile, derivative, year, inPossession, type, url, annotation, icon, mobile] = missiles
+      let [country, inherited, method, missile, derivative, year, inPossession, type, url, annotation, icon, isMobile] = missiles
+
+      if (!years[year]) {
+        years[year] = true
+      }
 
       // Push child missile name to child array
       child.push(childMissile)
@@ -67,7 +72,7 @@ async function parseData(csv) {
         annotation,
         method,
         icon,
-        mobile
+        isMobile
       })
 
       if (!types.includes(type)) {
@@ -80,14 +85,26 @@ async function parseData(csv) {
       })
     })
 
+    const mobileOnly = relationship.filter(d => d.isMobile)
     let stratify = d3.stratify()
       .id(d => d.name)
       .parentId(d => d.parent)
-    let root = stratify(relationship)
+    let fullSet = stratify(relationship)
 
-    return root
+    let dataset = {
+      years,
+      fullSet,
+      mobile: stratify(mobileOnly)
+    }
+
+    return dataset
   })
-  return d3.hierarchy(nodes)
+  console.log(nodes)
+
+  nodes.fullSet = d3.hierarchy(nodes.fullSet)
+  nodes.mobile = d3.hierarchy(nodes.mobile)
+
+  return nodes
 }
 
 
@@ -95,7 +112,20 @@ async function parseData(csv) {
 
 async function createTree() {
 
-  const data = await parseData(csv)
+  const dataset = await parseData(csv)
+  const mobile = dataset.mobile
+  const fullSet = dataset.fullSet
+  let data
+
+  function resizeTree(mql) {
+    data = mql.matches ? mobile : fullSet
+  }
+  let mql = window.matchMedia('(max-width: 700px)')
+  mql.addListener(resizeTree)
+  window.onload = resizeTree(mql)
+
+  console.log(mql)
+
   const findYears = await fetchCSV(csv)
   let years = []
   findYears.forEach(missiles => {
@@ -203,11 +233,15 @@ async function createTree() {
     .attr("d", elbow)
     .style('stroke-dasharray', d => {
       let method = d.target.data.data.method
-      console.log(method)
       if (d.target.data.data.inherited || method === "Rename") {
         return ('10.3')
       }
     })
+
+
+
+  // ---------------Nodes---------------
+
 
   const node = g.selectAll('.node')
     .data(treeNodes.descendants())
@@ -225,12 +259,16 @@ async function createTree() {
       }
     })
 
+
+
+  // ---------------Rectangles---------------
+
+
   let rects = node.append('rect')
-    .attr("width", 200)
+    .attr("width", 60)
     .attr("height", 54)
-    .attr('x', -100)
+    .attr('x', -30)
     .attr('y', -9)
-    .attr('class', 'tippyTips')
     // .attr('id', d => {
     //   return 'node' + d.data.id
     // })
@@ -239,20 +277,18 @@ async function createTree() {
       return obj[type]
     })
 
-  legend = svg.append("g")
-    .attr("class", "legend")
-    // .attr("transform", "translate(50,30)")
-    .style("font-size", "12px")
-  // .call(d3.legend)
-
   if (!SVGElement.prototype.contains) {
     SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
   }
 
+
+
+  // ---------------Hover Event---------------
+
+
   let tooltipInstance
 
   function onMouseover(data) {
-    console.log(data)
     let missile = data.data.data
     let missileInfo = missile.name.split(',')
     // let country = missileInfo[0]
@@ -314,16 +350,25 @@ async function createTree() {
   rects.on("mouseover", onMouseover)
     .on("mouseleave", onMouseLeave)
 
+
+
+  // ---------------Missiles---------------
+
+
   node.append("use")
     .attr("xlink:href", d => {
       let icon = d.data.data.icon
       return `./missiles/symbol-defs.svg#icon-${icon}`
     })
-    .attr("width", 200)
+    .attr("width", 60)
     .attr('class', 'missile-image')
-    .attr("height", 200)
-    .attr('x', -100)
-    .attr('y', -85)
+    .attr("height", 60)
+    .attr('x', -30)
+    .attr('y', -30)
+
+
+
+  // ---------------Country Label---------------
 
 
   node.append('text')
@@ -331,6 +376,10 @@ async function createTree() {
     .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[0]} `)
     .attr('class', 'missile-text missile-owner')
+
+
+  // ---------------Missile Label---------------
+
 
   node.append('text')
     // .attr('x', d => {
@@ -343,6 +392,8 @@ async function createTree() {
     .text(d => `${d.data.id.split(",")[1]} `)
     .attr('class', 'missile-text missile-name')
 }
+
+
 function fetchCSV(src) {
   return d3.csv(src, d => {
     let dataArrays = Object.values(d)

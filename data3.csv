@@ -1,0 +1,59 @@
+Country,,Acquistion Method,Missile,Derivitive,Activation/Delivery,Still Possess?,Type,Missile Threat URL,Annotations/Comments,Icon,isMobile
+USSR,,,Scud A,,1955,N,SRBM,https://missilethreat.csis.org/missile/scud/,Design derived from German V2,scudBC,TRUE
+USSR,,Development,Scud B,Scud A,1962,N,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,TRUE
+USSR,,Development,R-11FM (SLBM),Scud A,1959,N,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+Warsaw Pact,,USSR,Scud A,,1961,N,SRBM,https://missilethreat.csis.org/missile/scud/,"1961: Poland, Czechoslovakia, Bulgaria 1962:East Germany (GDR), Hungary, Romania,",scudBC,
+Warsaw Pact,,USSR,Scud B,,1965,N,SRBM,https://missilethreat.csis.org/missile/scud/,"Poland, Czechoslovakia, Bulgaria East Germany (GDR), Hungary, Romania",scudBC,
+Syria,,USSR,Scud B,,1973,Y,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+Egypt,,USSR,Scud B,,1973,Y,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,TRUE
+Iraq,,USSR,Scud B,,1975,N,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+Libya,,USSR,Scud B,,1976,N,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+South Yemen,,USSR,Scud B,,1979,N,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+North Korea,,Egypt,Scud B,,1979,Y,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,TRUE
+Vietnam,,USSR,Scud B,,1981,Y,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+North Korea,,Development,Hwasong 5,Scud B,1984,Y,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,Domestic Scud B variant,hwasong5,TRUE
+Iran,,Libya,Scud B,,1985,Y,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+Iran,,North Korea,Hwasong 5,,1987,Y,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,,hwasong5,TRUE
+Afghanistan,,USSR,Scud B,,1988,N,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+UAE,,North Korea,Hwasong 5,,1989,N,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,Never activated due to quality issues,hwasong5,TRUE
+North Korea,,Development,Hwasong 6,Hwasong 5,1989,Y,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,Scud C equivalent,hwasong6,TRUE
+Iraq,,Development,Al-Hussein,Scud B,1990,N,SRBM,,"Missile reponsible fo the destruction of U.S. Army barracks at Dhahran, Saudi Arabia in 1991.",scudBC,
+Syria,,North Korea,Hwasong 6,,1991,Y,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,,hwasong6,TRUE
+Syria,,North Korea,Hwasong 9,,2000,Y,MRBM,https://missilethreat.csis.org/missile/scud-er/,,hwasong9,TRUE
+Iran,,Development,Shahab 1,Hwasong 5,1987,Y,SRBM,https://missilethreat.csis.org/missile/shahab-1/,,shahab1,TRUE
+Iran,,North Korea,Hwasong 6,,1991,Y,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,,hwasong6,TRUE
+Former Soviet Republics,Inherited,USSR,Scud B,,1991,N,SRBM,https://missilethreat.csis.org/missile/scud/,"Azerbaijan, Belarus, Kazakhstan, Georgia, Ukraine, Russia,",scudBC,
+Armenia,Inherited,USSR,Scud B,,1991,Y,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+Turkmenistan,Inherited,USSR,Scud B,,1991,Y,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+Czech Republic,Inherited,Warsaw Pact,Scud B,,1993,N,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+Slovakia,Inherited,Warsaw Pact,Scud B,,1993,N,SRBM,https://missilethreat.csis.org/missile/scud/,,scudBC,
+North Korea,,Development,Hwasong 7,Hwasong 6,1993,Y,MRBM,,,hwasong7,TRUE
+North Korea,,Development,Hwasong 9,Hwasong 6,1994,Y,MRBM,https://missilethreat.csis.org/missile/scud-er/,,hwasong9,TRUE
+Iran,,North Korea,Hwasong 7,,1996,Y,MRBM,,,hwasong7,TRUE
+Pakistan,,North Korea,Hwasong 7,,1996,Y,MRBM,,,hwasong7,TRUE
+Vietnam,,North Korea,Hwasong 6,,1998,Y,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,,hwasong6,TRUE
+Libya,,North Korea,Hwasong 6,,1999,N,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,,hwasong6,TRUE
+Yemen,,North Korea,Hwasong 6,,2001,N,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,,hwasong6,TRUE
+Iran,,Development,Shahab 3,Hwasong 7,2003,Y,MRBM,https://missilethreat.csis.org/missile/shahab-3/,,shahab3,TRUE
+Pakistan,,Development,Ghauri,Hwasong 7,2003,Y,MRBM,,,ghauri,TRUE
+Houthis,,Yemen,Hwasong 6,,2015,N,SRBM,https://missilethreat.csis.org/missile/scud/,,hwasong6,TRUE
+Houthis,,Iran,Shahab 1,,2016,Y,SRBM,https://missilethreat.csis.org/missile/shahab-1/,,shahab1,TRUE
+Houthis,,Rename,Burkan 1,Shahab 1,2016,Y,SRBM,https://missilethreat.csis.org/missile/shahab-1/,,shahab1,TRUE
+Houthis,,Iran,Qiam 1,,2017,Y,SRBM,https://missilethreat.csis.org/missile/qiam-1/,,qiam1,TRUE
+Houthis,,Rename,Burkan 2H,Qiam 1,2017,Y,SRBM,https://missilethreat.csis.org/missile/qiam-1/,,qiam1,TRUE
+Hezbollah,,Syria,Scud B,,2009,Y,SRBM,https://missilethreat.csis.org/country/hezbollahs-rocket-arsenal/,"Suspected transfer, not confirmed.",scudBC,
+Egypt,,Development,Project T,Scud B,1990,Y,SRBM,,,scudBC,
+Myanmar,,North Korea,Hwasong 5,,2004,Y,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,,hwasong5,TRUE
+Iran,,Development,Shahab 2,Shahab 1,1997,Y,SRBM,,Scud C equivalent.,shahab2,TRUE
+Iran,,Development,Qiam 1,Shahab 2,2017,Y,SRBM,https://missilethreat.csis.org/missile/qiam-1/,,qiam1,TRUE
+Iran,,Development,Qiam 2,Qiam 1,2019,Y,SRBM,,Updated version with maneuvering reentry vehicle.,qiam2,TRUE
+North Korea,,Development,Taepo-Dong 1,Hwasong 7,1998,N,IRBM,https://missilethreat.csis.org/missile/taepodong-1/,"Two staged rocket using mutliple Hwasong 7 engines. Protoype IRBM, tested only once.",taepodong1,TRUE
+North Korea,,Development,Taepo-Dong 2,Taepo-Dong 1,2006,N,ICBM,https://missilethreat.csis.org/missile/taepodong-2/,"Three-stage, protoype ICBM. Design used for Unha satellite launch vechicles, built as needed.",taepodong2,TRUE
+North Korea,,Development,Unha 2/3,Taepo-Dong 2,2009,Y,SLV,https://missilethreat.csis.org/missile/taepodong-2/,,taepodong2,TRUE
+North Korea,,Development,KN-18,Hwasong 6,2017,Y,SRBM,https://missilethreat.csis.org/missile/kn-18-marv-scud-variant/,Scud variant with manuevering reentry vehicle (MaRV).,KN-18,TRUE
+Iran,,Development,Emad,Shahab 3,2017,Y,MRBM,https://missilethreat.csis.org/missile/emad/,,emad,TRUE
+Iran,,Development,Ghadr 110,Shahab 3,2007,Y,MRBM,https://missilethreat.csis.org/missile/emad/,,shahab3,TRUE
+Iran,,Development,Safir,Kavoshgar-1,2009,Y,SLV,https://missilethreat.csis.org/missile/safir/,"Satellite Launch Vehicle, uses Shahab-3 engines",safir,TRUE
+Iran,,Development,Kavoshgar-1,Shahab 3,2008,Y,SLV,https://missilethreat.csis.org/missile/safir/,Sounding rocket,kavoshgar-1,TRUE
+Iran,,Development,Simorgh,Safir,2016,Y,SLV,https://missilethreat.csis.org/missile/simorgh/,"Satellite launch vehicle, uses Shahab-3 engines",simorgh,TRUE
+Iran,,Development,Shahab 3M,Shahab 3,2004,Y,MRBM,https://missilethreat.csis.org/missile/emad/,,shahab3M,TRUE

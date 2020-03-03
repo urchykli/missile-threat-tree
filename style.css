@@ -23,15 +23,17 @@ div.tooltip {
 
 .missile-text {
   font-family: Source Sans Pro;
-  font-size: 22.1px;
-  fill: #F0F3F5;
+  font-size: 20px;
+  fill: black;
+  /* fill: #F0F3F5; */
   font-weight: 400;
 }
 
 .missile-name {
   font-family: Open Sans;
-  font-size: 18px;
-  fill: #F0F3F5;
+  font-size: 15px;
+  /* fill: #F0F3F5; */
+  fill: black;
   font-weight: 300;
 }
 
