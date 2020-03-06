@@ -267,8 +267,8 @@ async function createTree() {
   let rects = node.append('rect')
     .attr("width", 40)
     .attr("height", 10)
-    .attr('x', -18)
-    .attr('y', 43)
+    .attr('x', 10)
+    .attr('y', 13)
     // .attr('id', d => {
     //   return 'node' + d.data.id
     // })
@@ -361,11 +361,11 @@ async function createTree() {
       return `./missiles/symbol-defs.svg#icon-${icon}`
     })
     .attr('transform', 'rotate(90)')
-    .attr("width", 80)
+    .attr("width", 180)
     .attr('class', 'missile-image')
     .attr("height", 100)
-    .attr('x', -20)
-    .attr('y', -20)
+    .attr('x', -95)
+    .attr('y', -50)
 
 
 
@@ -373,8 +373,8 @@ async function createTree() {
 
 
   node.append('text')
-    .attr('y', 20)
-    .attr('x', -20)
+    .attr('y', 10)
+    .attr('x', 10)
     // .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[0]} `)
     .attr('class', 'missile-text missile-owner')
@@ -389,8 +389,8 @@ async function createTree() {
     //     return xOffset
     //   }
     // })
-    .attr('y', 40)
-    .attr('x', -20)
+    .attr('y', -5)
+    .attr('x', 10)
     // .attr('text-anchor', 'middle')
     .text(d => `${d.data.id.split(",")[1]} `)
     .attr('class', 'missile-text missile-name')
