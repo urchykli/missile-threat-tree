@@ -72,8 +72,23 @@ div.tooltip {
   width: 1px;
 }
 
+header.chart-header {
+  position: fixed;
+  background-color: white;
+  top: 0;
+	left: 0;
+	z-index: 100;
+	/* width: 25%; */
+}
+
 .legend__wrapper {
+  position: relative;
+  z-index: 100;
   display: flex;
+  margin-bottom: 0 auto 40px auto;
+  background-color: white;
+  height: 40px;
+  width: 100%;
 }
 
 .legend {

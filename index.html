@@ -6,26 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-orig.css">
   <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/animations/scale.css" />
 </head>
 
 <body>
-  <div class="legend__wrapper">
-    <ul class="legend legend__colors">
-      <li class="legend__item__colors legend__item--ICBM">ICBM</li>
-      <li class="legend__item__colors legend__item--IRBM">IRBM</li>
-      <li class="legend__item__colors legend__item--MRBM">MRBM</li>
-      <li class="legend__item__colors legend__item--SLV">SLV</li>
-      <li class="legend__item__colors legend__item--SRBM">SRBM</li>
-    </ul>
-    <ul class="legend legend__lines">
-      <li class="legend__item__lines legend__item--acquired">Acquired</li>
-      <li class="legend__item__lines legend__item--developed">Developed</li>
-      <li class="legend__item__lines legend__item--inherited">Inherited</li>
-      <li class="legend__item__lines legend__item--renamed">Renamed</li>
-    </ul>
-  </div>
+  <header class='chart-header'>
+    <div class="legend__wrapper">
+      <ul class="legend legend__colors">
+        <li class="legend__item__colors legend__item--ICBM">ICBM</li>
+        <li class="legend__item__colors legend__item--IRBM">IRBM</li>
+        <li class="legend__item__colors legend__item--MRBM">MRBM</li>
+        <li class="legend__item__colors legend__item--SLV">SLV</li>
+        <li class="legend__item__colors legend__item--SRBM">SRBM</li>
+      </ul>
+      <ul class="legend legend__lines">
+        <li class="legend__item__lines legend__item--acquired">Acquired</li>
+        <li class="legend__item__lines legend__item--developed">Developed</li>
+        <li class="legend__item__lines legend__item--inherited">Inherited</li>
+        <li class="legend__item__lines legend__item--renamed">Renamed</li>
+      </ul>
+    </div>
+  </header>
   <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv"
     class="sr-only">Download the data for the proliferation of the Scud missile.</a>
   <div id="chart"></div>

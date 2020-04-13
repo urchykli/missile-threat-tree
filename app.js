@@ -1,7 +1,7 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
 let csv = './data3.csv'
 
-const margin = { top: 40, right: 40, bottom: 140, left: 40 }
+const margin = { top: 80, right: 40, bottom: 140, left: 40 }
 const fullWidth = 1200
 const fullHeight = 3000
 const width = fullWidth - margin.left - margin.right
@@ -99,7 +99,6 @@ async function parseData(csv) {
 
     return dataset
   })
-  console.log(nodes)
 
   nodes.fullSet = d3.hierarchy(nodes.fullSet)
   nodes.mobile = d3.hierarchy(nodes.mobile)
@@ -117,14 +116,14 @@ async function createTree() {
   const fullSet = dataset.fullSet
   let data
 
+  // ---------------Load data---------------
+
   function resizeTree(mql) {
     data = mql.matches ? mobile : fullSet
   }
   let mql = window.matchMedia('(max-width: 700px)')
   mql.addListener(resizeTree)
   window.onload = resizeTree(mql)
-
-  console.log(mql)
 
   const findYears = await fetchCSV(csv)
   let years = []
@@ -365,7 +364,7 @@ async function createTree() {
     .attr('class', 'missile-image')
     .attr("height", 100)
     .attr('x', -95)
-    .attr('y', -50)
+    .attr('y', -48)
 
 
 
