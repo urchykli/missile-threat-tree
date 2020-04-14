@@ -172,8 +172,9 @@ async function createTree() {
   // nodes.forEach(function (d) { d.y = d.depth * 180; })
   const svg = d3.select('body')
     .append('svg')
-    .attr('width', fullWidth)
-    .attr('height', fullHeight)
+    // .attr('width', fullWidth)
+    // .attr('height', fullHeight)
+    .attr('viewBox', `0 0 ${fullWidth} ${fullHeight}`)
     .attr('role', 'presentation')
 
   const g = svg.append('g')
