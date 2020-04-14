@@ -282,6 +282,49 @@ async function createTree() {
   }
 
 
+  // ---------------Missiles---------------
+
+
+  node.append("use")
+    .attr("xlink:href", d => {
+      let icon = d.data.data.icon
+      return `./missiles/symbol-defs.svg#icon-${icon}`
+    })
+    .attr('transform', 'rotate(90)')
+    .attr("width", 180)
+    .attr('class', 'missile-image')
+    .attr("height", 100)
+    .attr('x', -95)
+    .attr('y', -48)
+
+
+
+  // ---------------Country Label---------------
+
+
+  node.append('text')
+    .attr('y', 10)
+    .attr('x', 10)
+    // .attr('text-anchor', 'middle')
+    .text(d => `${d.data.id.split(",")[0]} `)
+    .attr('class', 'missile-text missile-owner')
+
+
+  // ---------------Missile Label---------------
+
+
+  node.append('text')
+    // .attr('x', d => {
+    //   if (!d.children) {
+    //     return xOffset
+    //   }
+    // })
+    .attr('y', -5)
+    .attr('x', 10)
+    // .attr('text-anchor', 'middle')
+    .text(d => `${d.data.id.split(",")[1]} `)
+    .attr('class', 'missile-text missile-name')
+
 
   // ---------------Hover Event---------------
 
@@ -347,53 +390,11 @@ async function createTree() {
     tooltip.setAttribute("aria-expanded", false)
   }
 
-  rects.on("mouseover", onMouseover)
+  node.on("mouseover", onMouseover)
     .on("mouseleave", onMouseLeave)
 
 
 
-  // ---------------Missiles---------------
-
-
-  node.append("use")
-    .attr("xlink:href", d => {
-      let icon = d.data.data.icon
-      return `./missiles/symbol-defs.svg#icon-${icon}`
-    })
-    .attr('transform', 'rotate(90)')
-    .attr("width", 180)
-    .attr('class', 'missile-image')
-    .attr("height", 100)
-    .attr('x', -95)
-    .attr('y', -48)
-
-
-
-  // ---------------Country Label---------------
-
-
-  node.append('text')
-    .attr('y', 10)
-    .attr('x', 10)
-    // .attr('text-anchor', 'middle')
-    .text(d => `${d.data.id.split(",")[0]} `)
-    .attr('class', 'missile-text missile-owner')
-
-
-  // ---------------Missile Label---------------
-
-
-  node.append('text')
-    // .attr('x', d => {
-    //   if (!d.children) {
-    //     return xOffset
-    //   }
-    // })
-    .attr('y', -5)
-    .attr('x', 10)
-    // .attr('text-anchor', 'middle')
-    .text(d => `${d.data.id.split(",")[1]} `)
-    .attr('class', 'missile-text missile-name')
 }
 
 

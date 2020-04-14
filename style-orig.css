@@ -2,24 +2,10 @@ rect:hover {
   fill: #DFE4E7!important;
 }
 
-.missile-image,
+/* .missile-image,
 .missile-text {
   pointer-events: none;
-}
-
-div.tooltip {	
-  position: absolute;			
-  text-align: center;			
-  max-width: 160px;					
-  /* height: 28px;					 */
-  padding: 2px;				
-  font: 12px sans-serif;		
-  background: #07344A;
-  color: #F0F3F5;	
-  border: 0px;		
-  border-radius: 8px;			
-  pointer-events: none;			
-}
+} */
 
 .missile-text {
   font-family: Source Sans Pro;
@@ -35,6 +21,20 @@ div.tooltip {
   /* fill: #F0F3F5; */
   fill: black;
   font-weight: 300;
+}
+
+div.tooltip {	
+  position: absolute;			
+  text-align: center;			
+  max-width: 160px;					
+  /* height: 28px;					 */
+  padding: 2px;				
+  font: 12px sans-serif;		
+  background: #07344A;
+  color: #F0F3F5;	
+  border: 0px;		
+  border-radius: 8px;			
+  pointer-events: none;			
 }
 
 .tooltip-close {
