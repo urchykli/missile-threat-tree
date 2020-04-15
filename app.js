@@ -83,6 +83,7 @@ async function parseData(csv) {
         let typeVal = typeColors[i]
         obj[type] = typeVal
       })
+
     })
 
     const mobileOnly = relationship.filter(d => d.isMobile)
@@ -90,12 +91,13 @@ async function parseData(csv) {
       .id(d => d.name)
       .parentId(d => d.parent)
     let fullSet = stratify(relationship)
-
+    console.log(fullSet)
     let dataset = {
       years,
       fullSet,
       mobile: stratify(mobileOnly)
     }
+
 
     return dataset
   })
@@ -247,6 +249,9 @@ async function createTree() {
     .data(treeNodes.descendants())
     .enter().append('g')
     .attr('class', 'node')
+    .attr('id', d => {
+      return d.data.id
+    })
     .attr('transform', d => {
       yPos = y_scale(d.data.data.year)
       // -------------- Refactor --------------
@@ -328,7 +333,6 @@ async function createTree() {
 
   // ---------------Hover Event---------------
 
-
   let tooltipInstance
 
   function onMouseover(data) {
@@ -361,11 +365,11 @@ async function createTree() {
     tooltip.content.querySelector('.tooltip__more-info').setAttribute('href', missile.url)
 
 
-    const node = document.importNode(tooltip.content, true)
+    const tooltipNode = document.importNode(tooltip.content, true)
     // Accessibility
     tooltip.setAttribute("aria-expanded", true)
 
-    container.appendChild(node)
+    container.appendChild(tooltipNode)
 
     tooltipInstance = tippy(this, {
       content: container.innerHTML,
@@ -375,7 +379,15 @@ async function createTree() {
       // }
     })
 
-    // rects.style('fill', 'white')
+    d3.select(this).select('rect').style('fill', 'orange')
+    d3.select(this).select('.missile-image')
+      // .attr('transform', 'rotate(180)')
+      .attr("width", 200)
+      .attr("height", 120)
+      .attr('x', -95)
+      .attr('y', -48)
+
+
     // link.style('stroke', "#c3c3c3")
     // while (data.parent) {
     //   d3.selectAll('#node' + data.parent.id).style('fill', 'red')
@@ -384,15 +396,40 @@ async function createTree() {
     //     data = data.data.parent
     //   }
     // }
+
+    let ancestors = data.ancestors()
+    let descendants = data.descendants()
+    descendants.shift()
+    let family = ancestors.concat(descendants)
+
+    node.filter(function (d) {
+      console.log(d)
+      if (family.indexOf(d) !== -1) return true
+    }).style('fill', 'red')
+
+    rects.filter(function (d) {
+      if (family.indexOf(d) !== -1) return true
+    }).style('fill', 'red')
+
   }
 
   function onMouseLeave(d) {
     tooltip.setAttribute("aria-expanded", false)
+    node.selectAll('rect')
+      .style('fill', d => {
+        let type = d.data.data.type
+        return obj[type]
+      })
+    d3.select(this).select('.missile-image')
+      // .attr('transform', 'rotate(90)')
+      .attr("width", 180)
+      .attr("height", 100)
+      .attr('x', -95)
+      .attr('y', -48)
   }
 
   node.on("mouseover", onMouseover)
     .on("mouseleave", onMouseLeave)
-
 
 
 }
