@@ -411,6 +411,10 @@ async function createTree() {
       if (family.indexOf(d) !== -1) return true
     }).style('fill', 'red')
 
+    link.filter(function (d) {
+      if (family.indexOf(d.target) !== -1) return true;
+    }).style("stroke", "orange");
+
   }
 
   function onMouseLeave(d) {
