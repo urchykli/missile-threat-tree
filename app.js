@@ -1,7 +1,7 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
 let csv = './data3.csv'
 
-const margin = { top: 80, right: 40, bottom: 140, left: 40 }
+const margin = { top: 80, right: 40, bottom: 140, left: 60 }
 const fullWidth = 1200
 const fullHeight = 3000
 const width = fullWidth - margin.left - margin.right
@@ -137,6 +137,9 @@ async function createTree() {
   const minYear = d3.min(years)
   const maxYear = d3.max(years)
 
+
+  // ---------------Tooltip---------------
+
   // Define the div for the tooltip
   let tooltip = document.getElementById('tooltip')
 
@@ -154,16 +157,22 @@ async function createTree() {
     }
   })
 
+  // ---------------Scale---------------
+
   let y_scale = d3.scaleLinear()
     .domain([minYear, maxYear])
     .range([margin.top, height])
+
+
+  // ---------------Axis---------------
 
   let y_axis = d3.axisLeft()
     .scale(y_scale)
     .tickFormat(d3.format('d'))
 
-
   y_axis.tickSize(-2000)
+
+
 
   const tree = d3.tree()
     .size([width, height])
@@ -171,11 +180,8 @@ async function createTree() {
       return (a.parent == b.parent ? .5 : 1)
     })
 
-  // nodes.forEach(function (d) { d.y = d.depth * 180; })
   const svg = d3.select('body')
     .append('svg')
-    // .attr('width', fullWidth)
-    // .attr('height', fullHeight)
     .attr('viewBox', `0 0 ${fullWidth} ${fullHeight}`)
     .attr('role', 'presentation')
 
@@ -188,7 +194,7 @@ async function createTree() {
 
   g.selectAll(".tick text")
     .attr('font-size', '20')
-    .attr("transform", `translate(${margin.left + 50},${0})`)
+  // .attr("transform", `translate(${margin.left + 50},${0})`)
 
   const elbow = (d, i) => {
     yPosTarget = y_scale(d.target.data.data.year)
@@ -241,9 +247,7 @@ async function createTree() {
     })
 
 
-
   // ---------------Nodes---------------
-
 
   const node = g.selectAll('.node')
     .data(treeNodes.descendants())
@@ -265,15 +269,14 @@ async function createTree() {
     })
 
 
+  // ---------------Missile Rectangles---------------
 
-  // ---------------Rectangles---------------
-
-
-  let rects = node.append('rect')
+  let missileRects = node.append('rect')
     .attr("width", 40)
     .attr("height", 10)
     .attr('x', 10)
     .attr('y', 13)
+    .attr('class', 'missile-rect')
     // .attr('id', d => {
     //   return 'node' + d.data.id
     // })
@@ -282,20 +285,15 @@ async function createTree() {
       return obj[type]
     })
 
-  if (!SVGElement.prototype.contains) {
-    SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
-  }
-
 
   // ---------------Missiles---------------
 
-
-  node.append("use")
+  let missileIcons = node.append("use")
     .attr("xlink:href", d => {
       let icon = d.data.data.icon
       return `./missiles/symbol-defs.svg#icon-${icon}`
     })
-    .attr('transform', 'rotate(90)')
+    .attr('transform', 'translate(0, 0) rotate(90)')
     .attr("width", 180)
     .attr('class', 'missile-image')
     .attr("height", 100)
@@ -306,8 +304,7 @@ async function createTree() {
 
   // ---------------Country Label---------------
 
-
-  node.append('text')
+  let countryLabel = node.append('text')
     .attr('y', 10)
     .attr('x', 10)
     // .attr('text-anchor', 'middle')
@@ -317,8 +314,7 @@ async function createTree() {
 
   // ---------------Missile Label---------------
 
-
-  node.append('text')
+  let missileLabel = node.append('text')
     // .attr('x', d => {
     //   if (!d.children) {
     //     return xOffset
@@ -331,9 +327,32 @@ async function createTree() {
     .attr('class', 'missile-text missile-name')
 
 
-  // ---------------Hover Event---------------
+  // ---------------Container Rectangles---------------
+
+  let bBox = d3.selectAll('.node').node().getBBox()
+
+  console.log(node)
+  let nodeRects = node.append('rect')
+    .attr('x', bBox.x)
+    .attr('y', bBox.y)
+    .attr('class', 'node-rect')
+    .attr("width", 150)
+    .attr("height", 150)
+    .style('fill', 'transparent')
+    .on("mouseover", onMouseover)
+    .on("mouseleave", onMouseLeave)
+
+
+  // ---------------Tooltip---------------
 
   let tooltipInstance
+
+  if (!SVGElement.prototype.contains) {
+    SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
+  }
+
+
+  // ---------------Hover Event---------------
 
   function onMouseover(data) {
     let missile = data.data.data
@@ -379,7 +398,8 @@ async function createTree() {
       // }
     })
 
-    d3.select(this).select('rect').style('fill', 'orange')
+    d3.select(this).select('.missile-rect').style('fill', 'orange')
+
     d3.select(this).select('.missile-image')
       // .attr('transform', 'rotate(180)')
       .attr("width", 200)
@@ -387,27 +407,12 @@ async function createTree() {
       .attr('x', -95)
       .attr('y', -48)
 
-
-    // link.style('stroke', "#c3c3c3")
-    // while (data.parent) {
-    //   d3.selectAll('#node' + data.parent.id).style('fill', 'red')
-    //   if (data.parent != 'null') {
-    //     d3.selectAll("#link" + data.parent.id + "-" + data.data.id).style("stroke", 'red')
-    //     data = data.data.parent
-    //   }
-    // }
-
     let ancestors = data.ancestors()
     let descendants = data.descendants()
     descendants.shift()
     let family = ancestors.concat(descendants)
 
-    node.filter(function (d) {
-      console.log(d)
-      if (family.indexOf(d) !== -1) return true
-    }).style('fill', 'red')
-
-    rects.filter(function (d) {
+    missileRects.filter(function (d) {
       if (family.indexOf(d) !== -1) return true
     }).style('fill', 'red')
 
@@ -419,7 +424,7 @@ async function createTree() {
 
   function onMouseLeave(d) {
     tooltip.setAttribute("aria-expanded", false)
-    node.selectAll('rect')
+    node.selectAll('.missile-rect')
       .style('fill', d => {
         let type = d.data.data.type
         return obj[type]
@@ -430,10 +435,10 @@ async function createTree() {
       .attr("height", 100)
       .attr('x', -95)
       .attr('y', -48)
-  }
 
-  node.on("mouseover", onMouseover)
-    .on("mouseleave", onMouseLeave)
+    link.style("stroke", '#07344A')
+
+  }
 
 
 }
