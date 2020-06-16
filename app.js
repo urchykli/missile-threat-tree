@@ -196,7 +196,7 @@ async function createTree() {
 
   let listGroup = listItem.append("g");
 
-  let listSVG = listGroup.append("svg").attr("width", 110).attr("height", 30);
+  let listSVG = listGroup.append("svg").attr("width", 110).attr("height", 35);
   // .attr("viewBox", `0 0 1 .5`)
   // .attr("preserveAspectRatio", "none");
 
