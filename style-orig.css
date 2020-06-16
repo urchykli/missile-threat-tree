@@ -7,6 +7,10 @@
   pointer-events: none;
 } */
 
+#missiles {
+  margin: 80px;
+}
+
 .missile-text {
   font-family: Source Sans Pro;
   font-size: 15px;
@@ -157,9 +161,9 @@ div.tooltip {
   border-top: 3px solid #07344a;
 }
 
-.legend__item--inherited::before {
+/* .legend__item--inherited::before {
   border-top: 1px dashed #07344a;
-}
+} */
 
 /* .legend__item--renamed::before {
   border-top: 3px dashed #07344a;

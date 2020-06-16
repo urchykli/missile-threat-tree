@@ -184,6 +184,43 @@ async function createTree() {
     .attr("viewBox", `0 0 ${fullWidth} ${fullHeight}`)
     .attr("role", "presentation");
 
+  // ---------------Missile List for Ian---------------
+
+  let missileList = d3.select("#missiles");
+
+  let listItem = missileList
+    .selectAll("li")
+    .data(data.descendants())
+    .enter()
+    .append("li");
+
+  let listGroup = listItem.append("g");
+
+  let listSVG = listGroup.append("svg").attr("width", 110).attr("height", 30);
+  // .attr("viewBox", `0 0 1 .5`)
+  // .attr("preserveAspectRatio", "none");
+
+  let listText = listGroup.append("text").text((d) => {
+    return d.data.data.name;
+  });
+
+  let missileListIcons = listSVG
+    .append("use")
+    .attr("xlink:href", (d) => {
+      let icon = d.data.data.icon;
+      console.log(icon);
+      return `./missiles/symbol-defs.svg#icon-${icon}`;
+    })
+    // .attr("transform", "scale(0.2)")
+    // .attr("viewBox", `0 0 100 100`)
+    .attr("width", 100)
+    // .attr("class", "missile-image")
+    .attr("height", 100)
+    // .attr("x", 30)
+    .attr("y", -30);
+
+  // ---------------End Missile List for Ian---------------
+
   const g = svg
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -191,11 +228,11 @@ async function createTree() {
   let axis = g.append("g").call(y_axis).attr("stroke-opacity", 0.5);
 
   axis.selectAll(".tick line").attr("stroke", "#DFE4E7");
-  // g.call((g) => g.selectAll(".tick line").attr("stroke", "#DFE4E7"));
   axis.selectAll(".domain").attr("stroke", "#DFE4E7");
 
   g.selectAll(".tick text").attr("font-size", "20");
-  // .attr("transform", `translate(${margin.left + 50},${0})`)
+
+  // ---------------Tree links---------------
 
   const elbow = (d, i) => {
     yPosTarget = y_scale(d.target.data.data.year);
@@ -240,17 +277,17 @@ async function createTree() {
       let method = d.target.data.data.method;
       let target = d.target.data.id.split(",");
       let parent = d.target.data.data.parent.split(",");
-      if (method === "Development" /*|| method === "Rename"*/) {
+      if (method === "Development") {
         return 3;
       }
     })
-    .attr("d", elbow)
-    .style("stroke-dasharray", (d) => {
-      let method = d.target.data.data.method;
-      if (d.target.data.data.inherited /*|| method === "Rename"*/) {
-        return "10.3";
-      }
-    });
+    .attr("d", elbow);
+  // .style("stroke-dasharray", (d) => {
+  //   let method = d.target.data.data.method;
+  //   if (d.target.data.data.inherited) {
+  //     return "10.3";
+  //   }
+  // });
 
   // ---------------Nodes---------------
 
@@ -371,6 +408,8 @@ async function createTree() {
 
     if (!missile.parent) {
       method = "Created";
+    } else if (missile.inherited) {
+      method = "Inherited";
     } else if (missile.method === "Development") {
       method = "Developed";
     } else if (missile.method === "Rename") {
