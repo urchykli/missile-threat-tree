@@ -1,7 +1,7 @@
 // let csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtLJIlrB1oAyaQXY6jAlsinmptuHZClR-d8kOzXbv9xSLyTYl-jFGmt92wmAvQ9qq64Ewps-tHAeaO/pub?gid=1716883814&single=true&output=csv'
-let csv = "./data3.csv";
+let csv = "./data.csv";
 
-const margin = { top: 80, right: 40, bottom: 140, left: 60 };
+const margin = { top: 80, right: 120, bottom: 140, left: 60 };
 const fullWidth = 1200;
 const fullHeight = 3000;
 const width = fullWidth - margin.left - margin.right;
@@ -11,7 +11,7 @@ const xOffset = 10;
 const devColor = "#F2C261";
 const acqColor = "#5F7981";
 const types = [];
-const typeColors = ["#5F7981", "#F2C261", "#07344A", "#4A2C07", "#076796"];
+const typeColors = ["#E04D44", "#009e91", "#E7B84F", "#2f5466", "#59A6D1"];
 let typeObj = [];
 let obj = {};
 
@@ -22,13 +22,11 @@ async function parseData(csv) {
     let relationship = [];
     let years = {};
     res.forEach((missiles) => {
-      // // Create child missile name
-      let childMissile = missiles[0] + "," + missiles[3];
-
       let [
         country,
         inherited,
         method,
+        renamed,
         missile,
         derivative,
         year,
@@ -44,29 +42,37 @@ async function parseData(csv) {
         years[year] = true;
       }
 
+      function getName(newName) {
+        return newName ? renamed : missile;
+      }
+
+      // // Create child missile name
+      let childMissile = country + "," + getName(renamed);
+
       // Push child missile name to child array
       child.push(childMissile);
       // Determine if missile was developed or acquired
       function getDerivative(developed) {
-        return developed ? missiles[4] : missiles[3];
+        return developed ? derivative : missile;
       }
       function parentCountry(developed) {
-        return developed === "Development" || developed === "Rename"
-          ? missiles[0]
-          : missiles[2];
+        return developed === "Development" ? country : method;
       }
       let parentMissile = "";
       // Determine if this is the root missile
-      if (!missiles[2]) {
+      if (!method) {
         // If root missile, add empty string to parentMissile
         parentMissile = "";
       } else {
         // If not root missile, create parent missile name
-        parentMissile =
-          parentCountry(missiles[2]) + "," + getDerivative(missiles[4]);
+        parentMissile = parentCountry(method) + "," + getDerivative(derivative);
       }
       // Push parent missile name to parent array
       parent.push(parentMissile);
+
+      function getMethod(renamed) {
+        return !renamed ? method : "Renamed";
+      }
 
       relationship.push({
         name: childMissile,
@@ -77,7 +83,7 @@ async function parseData(csv) {
         type,
         url,
         annotation,
-        method,
+        method: getMethod(renamed),
         icon,
         isMobile,
       });
@@ -98,13 +104,13 @@ async function parseData(csv) {
       .id((d) => d.name)
       .parentId((d) => d.parent);
     let fullSet = stratify(relationship);
-    console.log(fullSet);
     let dataset = {
       years,
       fullSet,
       mobile: stratify(mobileOnly),
     };
 
+    console.log(dataset);
     return dataset;
   });
 
@@ -132,7 +138,7 @@ async function createTree() {
   const findYears = await fetchCSV(csv);
   let years = [];
   findYears.forEach((missiles) => {
-    years.push(missiles[5]);
+    years.push(missiles[6]);
   });
   const og = data.data.data;
 
@@ -184,43 +190,6 @@ async function createTree() {
     .attr("viewBox", `0 0 ${fullWidth} ${fullHeight}`)
     .attr("role", "presentation");
 
-  // ---------------Missile List for Ian---------------
-
-  let missileList = d3.select("#missiles");
-
-  let listItem = missileList
-    .selectAll("li")
-    .data(data.descendants())
-    .enter()
-    .append("li");
-
-  let listGroup = listItem.append("g");
-
-  let listSVG = listGroup.append("svg").attr("width", 110).attr("height", 35);
-  // .attr("viewBox", `0 0 1 .5`)
-  // .attr("preserveAspectRatio", "none");
-
-  let listText = listGroup.append("text").text((d) => {
-    return d.data.data.name;
-  });
-
-  let missileListIcons = listSVG
-    .append("use")
-    .attr("xlink:href", (d) => {
-      let icon = d.data.data.icon;
-      console.log(icon);
-      return `./missiles/symbol-defs.svg#icon-${icon}`;
-    })
-    // .attr("transform", "scale(0.2)")
-    // .attr("viewBox", `0 0 100 100`)
-    .attr("width", 100)
-    // .attr("class", "missile-image")
-    .attr("height", 100)
-    // .attr("x", 30)
-    .attr("y", -30);
-
-  // ---------------End Missile List for Ian---------------
-
   const g = svg
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -230,7 +199,7 @@ async function createTree() {
   axis.selectAll(".tick line").attr("stroke", "#DFE4E7");
   axis.selectAll(".domain").attr("stroke", "#DFE4E7");
 
-  g.selectAll(".tick text").attr("font-size", "20");
+  g.selectAll(".tick text").attr("font-size", "20").attr("class", "dates");
 
   // ---------------Tree links---------------
 
@@ -257,6 +226,9 @@ async function createTree() {
     }
   };
 
+  // var diagonal = d3.svg.diagonal()
+  // .projection(function(d) { return [d.y, d.x]; });
+
   let linkPath = d3
     .linkHorizontal()
     .x((d) => d.x)
@@ -281,7 +253,7 @@ async function createTree() {
         return 3;
       }
     })
-    .attr("d", elbow);
+    .attr("d", linkPath);
   // .style("stroke-dasharray", (d) => {
   //   let method = d.target.data.data.method;
   //   if (d.target.data.data.inherited) {
@@ -301,6 +273,7 @@ async function createTree() {
       return d.data.id;
     })
     .attr("transform", (d) => {
+      console.log(d);
       yPos = y_scale(d.data.data.year);
       // -------------- Refactor --------------
       if (d.data.data === og) {
@@ -367,7 +340,13 @@ async function createTree() {
     .attr("y", -5)
     .attr("x", 10)
     // .attr('text-anchor', 'middle')
-    .text((d) => `${d.data.id.split(",")[1]} `)
+    .text((d) => {
+      let owner = "";
+      if (d.data.data.inPossession === "Y") {
+        owner = "*";
+      }
+      return d.data.id.split(",")[1] + owner;
+    })
     .attr("class", "missile-text missile-name")
     .style("font-weight", "300");
 
@@ -401,9 +380,9 @@ async function createTree() {
     let missileInfo = missile.name.split(",");
     // let country = missileInfo[0]
     let name = missileInfo[1];
-    // let parentInfo = missile.parent.split(',')
+    let parentInfo = missile.parent.split(",");
     // let parentCountry = parentInfo[0]
-    // let parentName = parentInfo[1]
+    let parentName = parentInfo[1];
     let method = "";
 
     if (!missile.parent) {
@@ -412,8 +391,8 @@ async function createTree() {
       method = "Inherited";
     } else if (missile.method === "Development") {
       method = "Developed";
-    } else if (missile.method === "Rename") {
-      method = "Renamed";
+    } else if (missile.method === "Renamed") {
+      method = "Acquired as " + parentName;
     } else {
       method = "Acquired";
     }
@@ -443,8 +422,6 @@ async function createTree() {
       //   positionFixed: true
       // }
     });
-
-    console.log(this.parentNode);
 
     let ancestors = data.ancestors();
     let descendants = data.descendants();

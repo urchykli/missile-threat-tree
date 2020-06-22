@@ -1,19 +1,10 @@
-/* rect:hover {
-  fill: #DFE4E7!important;
-} */
-
-/* .missile-image,
-.missile-text {
-  pointer-events: none;
-} */
-
 #missiles {
   margin: 80px;
 }
 
 .missile-text {
   font-family: Source Sans Pro;
-  font-size: 15px;
+  font-size: 12px;
   fill: black;
   /* fill: #F0F3F5; */
   /* font-weight: 400; */
@@ -21,7 +12,7 @@
 
 .missile-name {
   font-family: Open Sans;
-  font-size: 20px;
+  font-size: 16px;
   /* fill: #F0F3F5; */
   fill: black;
   /* font-weight: 300; */
@@ -129,23 +120,23 @@ div.tooltip {
 }
 
 .legend__item--SRBM::before {
-  background: #5f7981;
+  background: #e04d44;
 }
 
 .legend__item--MRBM::before {
-  background: #f2c261;
+  background: #009e91;
 }
 
 .legend__item--IRBM::before {
-  background: #07344a;
+  background: #e7b84f;
 }
 
 .legend__item--ICBM::before {
-  background: #4a2c07;
+  background: #2f5466;
 }
 
 .legend__item--SLV::before {
-  background: #076796;
+  background: #59a6d1;
 }
 
 .legend__item__lines::before {
@@ -161,10 +152,8 @@ div.tooltip {
   border-top: 3px solid #07344a;
 }
 
-/* .legend__item--inherited::before {
-  border-top: 1px dashed #07344a;
-} */
-
-/* .legend__item--renamed::before {
-  border-top: 3px dashed #07344a;
-} */
+.dates {
+  font-family: Open Sans;
+  font-size: 16px;
+  color: #333333;
+}

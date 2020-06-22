@@ -21,9 +21,7 @@ Iraq,,Development,,Al-Hussein,Scud B,1990,N,SRBM,,"Missile reponsible fo the des
 Syria,,North Korea,,Hwasong 6,,1991,Y,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,,hwasong5,TRUE
 Syria,,North Korea,,Hwasong 9,,2000,Y,MRBM,https://missilethreat.csis.org/missile/scud-er/,,hwasong9,TRUE
 Iran,,North Korea,,Hwasong 6,,1991,Y,SRBM,https://missilethreat.csis.org/missile/hwasong-5/,,hwasong5,TRUE
-Former Soviet Republics,Inherited,USSR,,Scud B,,1991,N,SRBM,https://missilethreat.csis.org/missile/scud/,"Azerbaijan, Belarus, Kazakhstan, Georgia, Ukraine, Russia",hwasong5,
-Armenia,Inherited,USSR,,Scud B,,1991,Y,SRBM,https://missilethreat.csis.org/missile/scud/,,hwasong5,
-Turkmenistan,Inherited,USSR,,Scud B,,1991,Y,SRBM,https://missilethreat.csis.org/missile/scud/,,hwasong5,
+Former Soviet Republics,Inherited,USSR,,Scud B,,1991,N,SRBM,https://missilethreat.csis.org/missile/scud/,"Azerbaijan, Belarus, Kazakhstan, Georgia, Ukraine, Russia, Turkmenistan, Armenia",hwasong5,
 Czech Republic,Inherited,Warsaw Pact,,Scud B,,1993,N,SRBM,https://missilethreat.csis.org/missile/scud/,,hwasong5,
 Slovakia,Inherited,Warsaw Pact,,Scud B,,1993,N,SRBM,https://missilethreat.csis.org/missile/scud/,,hwasong5,
 North Korea,,Development,,Hwasong 7,Hwasong 6,1993,Y,MRBM,,,hwasong7,TRUE
