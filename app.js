@@ -148,21 +148,21 @@ async function createTree() {
   // ---------------Tooltip---------------
 
   // Define the div for the tooltip
-  let tooltip = document.getElementById("tooltip");
+  // let tooltip = document.getElementById("tooltip");
 
-  tippy.setDefaultProps({
-    animation: "fade",
-    hideOnClick: true,
-    interactive: true,
-    onMount(tip) {
-      let close = document.querySelector(".tooltip-close");
+  // tippy.setDefaultProps({
+  //   animation: "fade",
+  //   hideOnClick: true,
+  //   interactive: true,
+  //   onMount(tip) {
+  //     let close = document.querySelector(".tooltip-close");
 
-      if (!close) return;
-      close.addEventListener("click", () => {
-        tip.hide();
-      });
-    },
-  });
+  //     if (!close) return;
+  //     close.addEventListener("click", () => {
+  //       tip.hide();
+  //     });
+  //   },
+  // });
 
   // ---------------Scale---------------
 
@@ -226,9 +226,6 @@ async function createTree() {
     }
   };
 
-  // var diagonal = d3.svg.diagonal()
-  // .projection(function(d) { return [d.y, d.x]; });
-
   let linkPath = d3
     .linkHorizontal()
     .x((d) => d.x)
@@ -254,12 +251,6 @@ async function createTree() {
       }
     })
     .attr("d", linkPath);
-  // .style("stroke-dasharray", (d) => {
-  //   let method = d.target.data.data.method;
-  //   if (d.target.data.data.inherited) {
-  //     return "10.3";
-  //   }
-  // });
 
   // ---------------Nodes---------------
 
@@ -273,9 +264,7 @@ async function createTree() {
       return d.data.id;
     })
     .attr("transform", (d) => {
-      console.log(d);
       yPos = y_scale(d.data.data.year);
-      // -------------- Refactor --------------
       if (d.data.data === og) {
         return "translate(" + d.x + "," + yPos + ")";
       } else if (d.children) {
@@ -294,9 +283,6 @@ async function createTree() {
     .attr("x", 10)
     .attr("y", 13)
     .attr("class", "missile-rect")
-    // .attr('id', d => {
-    //   return 'node' + d.data.id
-    // })
     .style("fill", (d) => {
       let type = d.data.data.type;
       return obj[type];
@@ -306,7 +292,7 @@ async function createTree() {
 
   let missileIcons = node
     .append("use")
-    .attr("xlink:href", (d) => {
+    .attr("href", (d) => {
       let icon = d.data.data.icon;
       return `./missiles/symbol-defs.svg#icon-${icon}`;
     })
@@ -361,114 +347,114 @@ async function createTree() {
     .attr("class", "node-rect")
     .attr("width", 150)
     .attr("height", 110)
-    .style("fill", "transparent")
-    .on("mouseover", onMouseover)
-    .on("mouseleave", onMouseLeave);
+    .style("fill", "transparent");
+  // .on("mouseover", onMouseover)
+  // .on("mouseleave", onMouseLeave);
 
   // ---------------Tooltip---------------
 
-  let tooltipInstance;
+  // let tooltipInstance;
 
-  if (!SVGElement.prototype.contains) {
-    SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
-  }
+  // if (!SVGElement.prototype.contains) {
+  //   SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
+  // }
 
   // ---------------Hover Event---------------
 
-  function onMouseover(data) {
-    let missile = data.data.data;
-    let missileInfo = missile.name.split(",");
-    // let country = missileInfo[0]
-    let name = missileInfo[1];
-    let parentInfo = missile.parent.split(",");
-    // let parentCountry = parentInfo[0]
-    let parentName = parentInfo[1];
-    let method = "";
+  // function onMouseover(data) {
+  //   let missile = data.data.data;
+  //   let missileInfo = missile.name.split(",");
+  //   // let country = missileInfo[0]
+  //   let name = missileInfo[1];
+  //   let parentInfo = missile.parent.split(",");
+  //   // let parentCountry = parentInfo[0]
+  //   let parentName = parentInfo[1];
+  //   let method = "";
 
-    if (!missile.parent) {
-      method = "Created";
-    } else if (missile.inherited) {
-      method = "Inherited";
-    } else if (missile.method === "Development") {
-      method = "Developed";
-    } else if (missile.method === "Renamed") {
-      method = "Acquired as " + parentName;
-    } else {
-      method = "Acquired";
-    }
+  //   if (!missile.parent) {
+  //     method = "Created";
+  //   } else if (missile.inherited) {
+  //     method = "Inherited";
+  //   } else if (missile.method === "Development") {
+  //     method = "Developed";
+  //   } else if (missile.method === "Renamed") {
+  //     method = "Acquired as " + parentName;
+  //   } else {
+  //     method = "Acquired";
+  //   }
 
-    const container = document.createElement("div");
-    container.setAttribute("id", "parent");
+  //   const container = document.createElement("div");
+  //   container.setAttribute("id", "parent");
 
-    tooltip.content.querySelector(".tooltip__heading").innerHTML = name;
-    tooltip.content.querySelector(".tooltip__method").innerHTML = method;
-    tooltip.content.querySelector(".tooltip__year").innerHTML = missile.year;
-    tooltip.content.querySelector(".tooltip__annotation").innerHTML =
-      missile.annotation;
-    tooltip.content
-      .querySelector(".tooltip__more-info")
-      .setAttribute("href", missile.url);
+  //   tooltip.content.querySelector(".tooltip__heading").innerHTML = name;
+  //   tooltip.content.querySelector(".tooltip__method").innerHTML = method;
+  //   tooltip.content.querySelector(".tooltip__year").innerHTML = missile.year;
+  //   tooltip.content.querySelector(".tooltip__annotation").innerHTML =
+  //     missile.annotation;
+  //   tooltip.content
+  //     .querySelector(".tooltip__more-info")
+  //     .setAttribute("href", missile.url);
 
-    const tooltipNode = document.importNode(tooltip.content, true);
-    // Accessibility
-    tooltip.setAttribute("aria-expanded", true);
+  //   const tooltipNode = document.importNode(tooltip.content, true);
+  //   // Accessibility
+  //   tooltip.setAttribute("aria-expanded", true);
 
-    container.appendChild(tooltipNode);
+  //   container.appendChild(tooltipNode);
 
-    tooltipInstance = tippy(this, {
-      content: container.innerHTML,
-      appendTo: document.body,
-      // popperOptions: {
-      //   positionFixed: true
-      // }
-    });
+  //   tooltipInstance = tippy(this, {
+  //     content: container.innerHTML,
+  //     appendTo: document.body,
+  //     // popperOptions: {
+  //     //   positionFixed: true
+  //     // }
+  //   });
 
-    let ancestors = data.ancestors();
-    let descendants = data.descendants();
-    descendants.shift();
-    let family = ancestors.concat(descendants);
+  //   let ancestors = data.ancestors();
+  //   let descendants = data.descendants();
+  //   descendants.shift();
+  //   let family = ancestors.concat(descendants);
 
-    missileRects
-      .filter(function (d) {
-        if (family.indexOf(d) !== -1) return true;
-      })
-      .style("fill", "red");
+  //   missileRects
+  //     .filter(function (d) {
+  //       if (family.indexOf(d) !== -1) return true;
+  //     })
+  //     .style("fill", "red");
 
-    link
-      .filter(function (d) {
-        if (family.indexOf(d.target) !== -1) return true;
-      })
-      .style("stroke", "orange");
+  //   link
+  //     .filter(function (d) {
+  //       if (family.indexOf(d.target) !== -1) return true;
+  //     })
+  //     .style("stroke", "orange");
 
-    d3.select(".missile-text")
-      .filter(function (d) {
-        if (family.indexOf(d.target) !== -1) return true;
-      })
-      .style("font-weight", "bold");
+  //   d3.select(".missile-text")
+  //     .filter(function (d) {
+  //       if (family.indexOf(d.target) !== -1) return true;
+  //     })
+  //     .style("font-weight", "bold");
 
-    countryLabel
-      .filter(function (d) {
-        if (family.indexOf(d.target) !== -1) return true;
-      })
-      .style("font-weight", "900");
-  }
+  //   countryLabel
+  //     .filter(function (d) {
+  //       if (family.indexOf(d.target) !== -1) return true;
+  //     })
+  //     .style("font-weight", "900");
+  // }
 
-  function onMouseLeave(d) {
-    tooltip.setAttribute("aria-expanded", false);
-    node.selectAll(".missile-rect").style("fill", (d) => {
-      let type = d.data.data.type;
-      return obj[type];
-    });
-    d3.select(this)
-      .select(".missile-image")
-      // .attr('transform', 'rotate(90)')
-      .attr("width", 180)
-      .attr("height", 100)
-      .attr("x", -95)
-      .attr("y", -48);
+  // function onMouseLeave(d) {
+  //   tooltip.setAttribute("aria-expanded", false);
+  //   node.selectAll(".missile-rect").style("fill", (d) => {
+  //     let type = d.data.data.type;
+  //     return obj[type];
+  //   });
+  //   d3.select(this)
+  //     .select(".missile-image")
+  //     // .attr('transform', 'rotate(90)')
+  //     .attr("width", 180)
+  //     .attr("height", 100)
+  //     .attr("x", -95)
+  //     .attr("y", -48);
 
-    link.style("stroke", "#07344A");
-  }
+  //   link.style("stroke", "#07344A");
+  // }
 }
 
 function fetchCSV(src) {
